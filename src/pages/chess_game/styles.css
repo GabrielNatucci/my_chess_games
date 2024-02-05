@@ -1,0 +1,9 @@
+main {
+    margin-top: 5%;
+    width: 100%;
+}
+
+.container {
+    width: 60%;
+    aspect-ratio: 1 / 1;
+}

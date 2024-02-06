@@ -1,9 +1,7 @@
 main {
-    margin-top: 5%;
+    user-select: none;
+    margin: 0%;
     width: 100%;
-}
-
-.container {
-    width: 60%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
+    min-height: 100%;
 }

@@ -1,19 +1,21 @@
 import "./styles.css"
-// import Knight from "../pieces/knight/Knight"
 
-const square = (props) => {
-    if ((props.RowId + props.id) % 2 === 0) {
-        return (
-            <div className="col bg-dark square" id={props.id} >
-                {/* <Knight /> */}
-            </div>
-        )
+const Square = ({ Row, Column, Text, children }) => {
+    let cord = Row + " " + Column;
+
+    let className;
+    if ((Row + Column) % 2 === 1) {
+        className = "square bg-dark square";
     } else {
-        return (
-            <div className="col bg-secondary square" id={props.id} >
-            </div>
-        )
+        className = "square bg-secondary square";
     }
+
+    return (
+        <div className={className} key={cord}>
+            {/* <p>{Text}</p> */}
+            {children}
+        </div>
+    )
 }
 
-export default square;
+export default Square;

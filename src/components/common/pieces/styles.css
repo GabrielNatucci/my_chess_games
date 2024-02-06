@@ -1,0 +1,14 @@
+:root {
+    --piece-size: 9vh;
+    --piece-half: calc(var(--piece-size) / 2);
+}
+
+.piece {
+    height: var(--piece-size);
+    width: var(--piece-size);
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.4));
+    user-select: auto;
+}

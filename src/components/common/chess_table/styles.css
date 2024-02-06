@@ -1,6 +1,16 @@
-.piece {
-    width: 4em;
-    margin: 0;
-    padding: 0;
-    aspect-ratio: 1/1;
+:root {
+    --table-size: 80vh
+}
+
+.main {
+    display: block;
+}
+
+.chess-table {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(8, calc(var(--table-size)/8));
+    grid-template-rows: repeat(8, calc(var(--table-size)/8));
+    width: var(--table-size);
+    height: var(--table-size);
 }

@@ -1,5 +1,5 @@
 import Piece from "../pieces/Piece.js";
-import React, { useRef } from "react";
+import React from "react";
 import "./styles.css";
 import Square from "../Square/Square";
 
@@ -56,50 +56,25 @@ for (let j = vertical.length - 1; j >= 0; j--) {
     }
 }
 
-const ChessTable = () => {
-    var r = document.querySelector(':root');
-    var rs = getComputedStyle(r);
-    let active_piece = useRef(0);
-    active_piece.current = null;
-
-    function grabPiece(e) {
-        if (e.target.classList.contains("piece")) { // verifica se eh uma peça
-            active_piece.current = e.target;
-        }
-
+class ChessTable extends React.Component {
+    constructor(props) {
+        super(props);
+        this.RefForPiece = React.createRef();
     }
 
-    function movePiece(e) {
-        if (active_piece.current) {
-            let piece_half = rs.getPropertyValue('--piece-half');
-            let table_size = rs.getPropertyValue('--table-size:');
-            console.log(table_size);
+    render() {
+        return (
+            <div
+                className="chess-table"
+                id="chess-table-id"
+                onMouseDown={this.props.grabPiece}
+                onMouseMove={this.props.movePiece}
+            >
+                {table}
+            </div>
+        )
 
-            let cordX = `calc(${e.clientX}px - ${piece_half})`;
-            let cordY = `calc(${e.clientY}px - ${piece_half})`;
-
-            active_piece.current.style.position = "absolute";
-            active_piece.current.style.left = cordX;
-            active_piece.current.style.top = cordY;
-        }
     }
-
-    function letOffPiece() {
-        if (active_piece.current) {
-            active_piece.current = null;
-
-        }
-    }
-
-    return (
-        <div className="chess-table"
-            onMouseDown={grabPiece}
-            onMouseMove={movePiece}
-            onMouseUp={letOffPiece}
-        >
-            {table}
-        </div>
-    )
 }
 
 export default ChessTable

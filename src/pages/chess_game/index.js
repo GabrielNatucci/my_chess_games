@@ -64,7 +64,10 @@ class ChessGame extends React.Component {
         }
 
         return (
-            <main className="d-flex justify-content-center" onMouseUp={letOffPiece}>
+            <main
+                className="d-flex justify-content-center"
+                onMouseUp={letOffPiece}
+            >
                 <ChessTable
                     grabPiece={grabPiece}
                     movePiece={movePiece}

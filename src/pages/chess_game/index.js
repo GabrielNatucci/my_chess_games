@@ -95,12 +95,23 @@ const ChessGame = () => {
     let TableItSelf = null;
 
     function grabPiece(e) {
-        TableItSelf = document.getElementById('chess-table-id');
+        if (e.button === 0) {
+            TableItSelf = document.getElementById('chess-table-id');
 
-        if (e.target.classList.contains("piece")) { // verifica se eh uma peça
-            start_square = findCurrentSquare(e, TableItSelf);
-            active_piece.current = e.target;
+            if (e.target.classList.contains("piece")) { // verifica se eh uma peça
+                start_square = findCurrentSquare(e, TableItSelf);
+                active_piece.current = e.target;
+            }
+        } else if (e.button === 2) {
+            if (active_piece.current) {
+                active_piece.current.style.position = "";
+                active_piece.current = null;
+            }
         }
+    }
+
+    const contextMenu = (e) => {
+        e.preventDefault();
     }
 
     function movePiece(e) {
@@ -147,10 +158,8 @@ const ChessGame = () => {
 
                     pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                     pieces_table[start_square[0]][start_square[1]] = "";
-                    console.log(pieces_table);
 
-                    setPiecesArray([...pieces_table]);
-                    console.log(piecesArray);
+                    setPiecesArray([...piecesArray]);
                 }
             }
 
@@ -167,6 +176,7 @@ const ChessGame = () => {
         >
             <ChessTable
                 grabPiece={grabPiece}
+                onContextMenu={contextMenu}
                 movePiece={movePiece}
                 horizontal={horizontal}
                 vertical={vertical}

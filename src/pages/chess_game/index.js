@@ -6,6 +6,7 @@ import Piece from "../../components/common/pieces/Piece"
 import definePieces from "./functions/define_pieces";
 import defineHorizonal from "./functions/define_horizontal";
 import defineVertical from "./functions/define_vertical";
+import validadeMoves from "./functions/validade_moves";
 
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
@@ -149,6 +150,9 @@ const ChessGame = () => {
     }
 
     function letOffPiece(e) {
+        console.log(start_square[0]);
+        console.log(start_square[1]);
+
         if (active_piece.current) {
             let end_square = findCurrentSquare(e, TableItSelf);
 
@@ -156,10 +160,14 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
-                    pieces_table[start_square[0]][start_square[1]] = "";
 
-                    setPiecesArray([...piecesArray]);
+                    if (validadeMoves(pieces_table, start_square, end_square)) {
+                        pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
+                        pieces_table[start_square[0]][start_square[1]] = "";
+                        setPiecesArray([...piecesArray]);
+                    } else {
+                        console.log("invalid move");
+                    }
                 }
             }
 

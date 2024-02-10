@@ -144,14 +144,15 @@ const ChessGame = () => {
             }
 
             active_piece.current.style.position = "absolute";
+            active_piece.current.style.zIndex = "100";
             active_piece.current.style.left = cordX;
             active_piece.current.style.top = cordY;
         }
     }
 
     function letOffPiece(e) {
-        console.log(start_square[0]);
-        console.log(start_square[1]);
+        // console.log(start_square[0]);
+        // console.log(start_square[1]);
 
         if (active_piece.current) {
             let end_square = findCurrentSquare(e, TableItSelf);
@@ -160,8 +161,7 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-
-                    if (validadeMoves(pieces_table, start_square, end_square)) {
+                    if (validadeMoves(pieces_table, start_square, end_square, active_piece)) {
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
                         setPiecesArray([...piecesArray]);
@@ -171,6 +171,7 @@ const ChessGame = () => {
                 }
             }
 
+            active_piece.current.style.zIndex = "";
             active_piece.current.style.position = "";
             active_piece.current = null;
         }

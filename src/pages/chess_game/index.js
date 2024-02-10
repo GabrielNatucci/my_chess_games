@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState } from "react";
 import ChessTable from "../../components/common/chess_table/chess_table";
-import "./styles.css"
+import "./styles.css";
 import Square from "../../components/common/Square/Square";
-import Piece from "../../components/common/pieces/Piece"
+import Piece from "../../components/common/pieces/Piece";
 import definePieces from "./functions/define_pieces";
 import defineHorizonal from "./functions/define_horizontal";
 import defineVertical from "./functions/define_vertical";
@@ -19,8 +19,8 @@ const findCurrentSquare = (e, TableItSelf) => {
     let offsetTop = TableItSelf.offsetTop;
     let offsetBottom = parseInt(TableItSelf.getBoundingClientRect().bottom);
 
-    let EachRowSquare = ((offsetRight - offsetLeft) / 8);
-    let EachFileSquare = ((offsetTop - offsetBottom) / 8);
+    let EachRowSquare = (offsetRight - offsetLeft) / 8;
+    let EachFileSquare = (offsetTop - offsetBottom) / 8;
 
     let end_square = [];
 
@@ -28,10 +28,14 @@ const findCurrentSquare = (e, TableItSelf) => {
         if (e.clientX > offsetRight) {
             end_square.push(-1);
             break;
-        } if (e.clientX < offsetLeft) {
+        }
+        if (e.clientX < offsetLeft) {
             end_square.push(-1);
             break;
-        } else if (e.clientX > (offsetLeft + (i * EachRowSquare)) && e.clientX < (offsetLeft + ((i + 1) * EachRowSquare))) {
+        } else if (
+            e.clientX > (offsetLeft + (i * EachRowSquare)) &&
+            e.clientX < (offsetLeft + ((i + 1) * EachRowSquare))
+        ) {
             end_square.push(i);
             break;
         }
@@ -41,18 +45,21 @@ const findCurrentSquare = (e, TableItSelf) => {
         if (e.clientY > offsetBottom) {
             end_square.push(-1);
             break;
-        } if (e.clientY < offsetTop) {
+        }
+        if (e.clientY < offsetTop) {
             end_square.push(-1);
             break;
-        } else if (e.clientY > (offsetBottom + ((i + 1) * EachFileSquare))
-            && e.clientY > (offsetBottom + ((i + 2) * EachFileSquare))) {
+        } else if (
+            e.clientY > (offsetBottom + ((i + 1) * EachFileSquare)) &&
+            e.clientY > (offsetBottom + ((i + 2) * EachFileSquare))
+        ) {
             end_square.push(i);
             break;
         }
     }
 
     return end_square;
-}
+};
 
 const areTheyEqual = (firstArray, secondArray) => {
     if (firstArray.length === secondArray.length) {
@@ -66,7 +73,7 @@ const areTheyEqual = (firstArray, secondArray) => {
     }
 
     return 1;
-}
+};
 
 const ChessGame = () => {
     const [piecesArray, setPiecesArray] = useState(pieces_table);
@@ -74,21 +81,23 @@ const ChessGame = () => {
     let table = [];
     for (let j = vertical.length - 1; j >= 0; j--) {
         for (let i = 0; i < horizontal.length; i++) {
-            table.push(<Square
-                key={`${i} + ${j}`}
-                Row={j}
-                Column={i}
-                Text={`${horizontal[i]}${vertical[j]}`}
-            >
-                <Piece type={piecesArray[i][j]} file={i + 1} rank={j + 1} />
-            </Square >);
+            table.push(
+                <Square
+                    key={`${i} + ${j}`}
+                    Row={j}
+                    Column={i}
+                    Text={`${horizontal[i]}${vertical[j]}`}
+                >
+                    <Piece type={piecesArray[i][j]} file={i + 1} rank={j + 1} />
+                </Square>,
+            );
         }
     }
 
     const RefForPiece = useRef();
 
     let active_piece = RefForPiece;
-    var r = document.querySelector(':root');
+    var r = document.querySelector(":root");
     var rs = getComputedStyle(r);
 
     let start_square = [];
@@ -97,7 +106,7 @@ const ChessGame = () => {
 
     function grabPiece(e) {
         if (e.button === 0) {
-            TableItSelf = document.getElementById('chess-table-id');
+            TableItSelf = document.getElementById("chess-table-id");
 
             if (e.target.classList.contains("piece")) { // verifica se eh uma peça
                 start_square = findCurrentSquare(e, TableItSelf);
@@ -113,7 +122,7 @@ const ChessGame = () => {
 
     const contextMenu = (e) => {
         e.preventDefault();
-    }
+    };
 
     function movePiece(e) {
         if (active_piece.current) {
@@ -122,10 +131,9 @@ const ChessGame = () => {
             let offsetLeft = TableItSelf.offsetLeft;
             let offsetBottom = parseInt(TableItSelf.getBoundingClientRect().bottom);
 
-            let piece_half = rs.getPropertyValue('--piece-half');
+            let piece_half = rs.getPropertyValue("--piece-half");
             let cordX = `calc(${e.clientX}px - ${piece_half})`;
             let cordY = `calc(${e.clientY}px - ${piece_half})`;
-
 
             if (e.clientX < offsetLeft) {
                 cordX = `calc(${offsetLeft}px - ${piece_half})`;
@@ -161,8 +169,11 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    if (validadeMoves(pieces_table, start_square, end_square, active_piece)) {
-                        pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
+                    if (
+                        validadeMoves(pieces_table, start_square, end_square, active_piece)
+                    ) {
+                        pieces_table[end_square[0]][end_square[1]] =
+                            pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
                         setPiecesArray([...piecesArray]);
                     } else {
@@ -175,7 +186,6 @@ const ChessGame = () => {
             active_piece.current.style.position = "";
             active_piece.current = null;
         }
-
     }
 
     return (
@@ -192,8 +202,8 @@ const ChessGame = () => {
                 table={table}
                 pieces_table={piecesArray}
             />
-        </ main>
-    )
-}
+        </main>
+    );
+};
 
 export default ChessGame;

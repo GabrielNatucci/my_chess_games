@@ -7,11 +7,12 @@ const evaluateWhitePawn = (pieces_table, start_square, end_square) => {
             if (pieces_table[end_square[0]][end_square[1]] === "") {
                 // caso a peça estega na casa de origem e
                 // caso o movimento seja até dois pra frente
-                if ((start_square[1] === origin_square))
+                if (start_square[1] === origin_square && (end_square[1] - start_square[1] <= 2)) {
                     return true;
+                }
 
                 // caso seja só um lance pra frente
-                if (end_square[1] - start_square[1])
+                if (end_square[1] - start_square[1] <= 1)
                     return true;
             }
         } else {

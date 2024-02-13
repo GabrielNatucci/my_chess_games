@@ -169,11 +169,8 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    if (
-                        validadeMoves(pieces_table, start_square, end_square, active_piece)
-                    ) {
-                        pieces_table[end_square[0]][end_square[1]] =
-                            pieces_table[start_square[0]][start_square[1]];
+                    if (validadeMoves(pieces_table, start_square, end_square, active_piece)) {
+                        pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
                         setPiecesArray([...piecesArray]);
                     } else {

@@ -7,10 +7,9 @@ const validadeMoves = (
     end_square,
     active_piece,
 ) => {
-    if (active_piece.current.className.search("wpawn") === 0) {
-        if (evaluateWhitePawn(pieces_table, start_square, end_square) === true) {
-            return true;
-        }
+    if (active_piece.current.className.search("wpawn") === 0 &&
+        evaluateWhitePawn(pieces_table, start_square, end_square) === true) {
+        return true;
     }
 
 

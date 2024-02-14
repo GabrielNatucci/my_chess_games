@@ -7,9 +7,13 @@ const validadeMoves = (
     end_square,
     active_piece,
 ) => {
-    if (active_piece.current.className.search("wpawn") === 0 &&
-        evaluateWhitePawn(pieces_table, start_square, end_square) === true) {
-        return true;
+    console.log(active_piece.current);
+    if (active_piece.current.className.search("wpawn") === 0) {
+        if (evaluateWhitePawn(pieces_table, start_square, end_square) === true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -17,10 +21,12 @@ const validadeMoves = (
         active_piece.current.className.search("brook") === 0) {
         if (evaluateRook(pieces_table, start_square, end_square) === true) {
             return true;
+        } else {
+            return false;
         }
     }
 
-    return false;
+    return true;
 };
 
 export default validadeMoves;

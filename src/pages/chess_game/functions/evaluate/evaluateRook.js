@@ -1,3 +1,4 @@
+import areSameColor from "./com/areSameColors";
 import isThereAPiece from "./com/isThereAPiece";
 
 function forBody(
@@ -19,8 +20,7 @@ function forBody(
 
     if (isThereAPiece(pieces_table, current_square) === true) {
         if (current_square[0] === end_square[0] && current_square[1] === end_square[1]) {
-            if (pieces_table[current_square[0]][current_square[1]][0] ===
-                pieces_table[start_square[0]][start_square[1]][0]) {
+            if (areSameColor(pieces_table, start_square, current_square) === true) {
                 return false;
             }
         } else {

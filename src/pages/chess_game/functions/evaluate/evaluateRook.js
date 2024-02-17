@@ -1,32 +1,30 @@
 import isThereAPiece from "./com/isThereAPiece";
 
-const verifyMoves = (i, pieces_table, start_square, is_horizontal) => { // verficar limites do movimento
+function forBody(
+    pieces_table,
+    start_square,
+    end_square,
+    is_horizontal,
+    i,
+) {
     let current_square = [];
 
-    if (is_horizontal) {
-        current_square[0] = i;
-        current_square[1] = start_square[1];
-
-        if (isThereAPiece(pieces_table, current_square) === true) {
-            console.log(pieces_table[current_square[0]][current_square[1]][0]);
-            if (pieces_table[current_square[0]][current_square[1]][0] ===
-                pieces_table[start_square[0]][start_square[1]][0]) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    } else {
-        current_square[1] = i;
+    if (is_horizontal === false) {
         current_square[0] = start_square[0];
+        current_square[1] = i;
+    } else {
+        current_square[1] = start_square[1];
+        current_square[0] = i;
+    }
 
-        if (isThereAPiece(pieces_table, current_square) === true) {
+    if (isThereAPiece(pieces_table, current_square) === true) {
+        if (current_square[0] === end_square[0] && current_square[1] === end_square[1]) {
             if (pieces_table[current_square[0]][current_square[1]][0] ===
                 pieces_table[start_square[0]][start_square[1]][0]) {
                 return false;
-            } else {
-                return true;
             }
+        } else {
+            return false;
         }
     }
 
@@ -38,48 +36,45 @@ const evaluateRook = (
     start_square,
     end_square,
 ) => {
-    // para ver se a casa de desnito não é uma peça do prórpio "time"
-    // if (pieces_table[end_square[0]][end_square[1]] !== "") {
-    //     if (pieces_table[end_square[0]][end_square[1]][0] ===
-    //         pieces_table[start_square[0]][start_square[1]][0])
-    //         return false
-    // } else { // aqui é pra ver se o movimento é possível, ou seja, se a torre consegue ver a casa que vai chegar, no eixo X
+    let is_mov_pos;
+    console.log(start_square)
+    console.log(end_square)
 
-    let is_mov_possible;
-
-    if (end_square[0] !== start_square[0]) { // caso a torre se movimente verticalmente
-        if (end_square[0] > start_square[0]) { // caso a torre vá para direita
-            for (let i = start_square[0]; i < end_square[0]; i++) {
-                console.log(i);
-                console.log(start_square[0]);
-                console.log(end_square[0]);
-                console.log(verifyMoves(i, pieces_table, start_square, true));
-                is_mov_possible = verifyMoves(i, pieces_table, start_square, true);
+    if (start_square[1] === end_square[1]) { // se o movimento for pros lados
+        if (end_square[0] > start_square[0]) { // pra direita
+            console.log("pra direita");
+            for (let i = end_square[0]; i > start_square[0]; i--) {
+                is_mov_pos = forBody(pieces_table, start_square, end_square, true, i);
+                if (is_mov_pos === false)
+                    break;
             }
-        } else { // caso a torre vá para esquerda
-            for (let i = start_square[0]; i > end_square[0]; i--) {
-                is_mov_possible = verifyMoves(i, pieces_table, start_square, true);
+        } else { // pra esquerda
+            console.log("pra esquerda");
+            for (let i = end_square[0]; i < start_square[0]; i++) {
+                is_mov_pos = forBody(pieces_table, start_square, end_square, true, i);
+                if (is_mov_pos === false)
+                    break;
             }
         }
-    } else { // mesma coisa da função de cima, para para o eixo Y
-        if (end_square[1] !== start_square[1]) { // caso a torre va para cima
-            if (end_square[1] > start_square[1]) {
-                for (let i = start_square[1]; i < end_square[1]; i++) {
-                    is_mov_possible = verifyMoves(i, pieces_table, start_square, false);
-                }
-            } else { // caso a torre va para baixo
-                for (let i = start_square[1]; i > end_square[1]; i--) {
-                    is_mov_possible = verifyMoves(i, pieces_table, start_square, false);
-                }
+    } else { // se o movimento for pra cima ou pra baixo
+        if (end_square[1] > start_square[1]) { // pra cima
+            console.log("pra cima");
+            for (let i = end_square[1]; i > start_square[1]; i--) {
+                is_mov_pos = forBody(pieces_table, start_square, end_square, false, i);
+                if (is_mov_pos === false)
+                    break;
+            }
+        } else { // pra baixo
+            console.log("pra baixo");
+            for (let i = end_square[1]; i < start_square[1]; i++) {
+                is_mov_pos = forBody(pieces_table, start_square, end_square, false, i);
+                if (is_mov_pos === false)
+                    break;
             }
         }
     }
 
-    if (is_mov_possible === true) {
-        return true;
-    } else {
-        return false;
-    }
+    return is_mov_pos;
 };
 
 export default evaluateRook;

@@ -37,19 +37,15 @@ const evaluateRook = (
     end_square,
 ) => {
     let is_mov_pos;
-    console.log(start_square)
-    console.log(end_square)
 
     if (start_square[1] === end_square[1]) { // se o movimento for pros lados
         if (end_square[0] > start_square[0]) { // pra direita
-            console.log("pra direita");
             for (let i = end_square[0]; i > start_square[0]; i--) {
                 is_mov_pos = forBody(pieces_table, start_square, end_square, true, i);
                 if (is_mov_pos === false)
                     break;
             }
         } else { // pra esquerda
-            console.log("pra esquerda");
             for (let i = end_square[0]; i < start_square[0]; i++) {
                 is_mov_pos = forBody(pieces_table, start_square, end_square, true, i);
                 if (is_mov_pos === false)
@@ -58,14 +54,12 @@ const evaluateRook = (
         }
     } else { // se o movimento for pra cima ou pra baixo
         if (end_square[1] > start_square[1]) { // pra cima
-            console.log("pra cima");
             for (let i = end_square[1]; i > start_square[1]; i--) {
                 is_mov_pos = forBody(pieces_table, start_square, end_square, false, i);
                 if (is_mov_pos === false)
                     break;
             }
         } else { // pra baixo
-            console.log("pra baixo");
             for (let i = end_square[1]; i < start_square[1]; i++) {
                 is_mov_pos = forBody(pieces_table, start_square, end_square, false, i);
                 if (is_mov_pos === false)

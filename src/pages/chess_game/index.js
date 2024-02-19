@@ -178,10 +178,8 @@ const ChessGame = () => {
                         } else {
                             isBlackToMove.current = true;
                         }
-
-                        console.log(isBlackToMove);
                     } else {
-                        console.log("invalid move");
+                        // console.log("invalid move");
                     }
                 }
             }

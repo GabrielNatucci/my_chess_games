@@ -10,4 +10,3 @@ root.render(
         <ChessGame />
     </React.StrictMode>
 );
-

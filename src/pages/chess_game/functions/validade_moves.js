@@ -9,8 +9,32 @@ const validadeMoves = (
     start_square,
     end_square,
     active_piece,
+    isBlackToMove,
 ) => {
     // console.log(active_piece.current);
+    // feitos: 
+    // peoes brancos
+    // torres
+    // cavalos
+    // reis
+    // bispos
+    // movimentos alternados, cada um tem sua vez afinal de contas
+    //
+    // falta:
+    // dama
+    // peões pretos
+    // an passant
+    // roque
+    // refatorar torres
+
+    // movimentos alternados, cada um tem sua vez afinal de contas
+    if (isBlackToMove.current === true) {
+        if (active_piece.current.className[0] === 'w')
+            return false;
+    } else {
+        if (active_piece.current.className[0] === 'b')
+            return false;
+    }
 
     if (active_piece.current.className.search("wpawn") === 0) { //peões brancos
         if (evaluateWhitePawn(pieces_table, start_square, end_square) === true) {

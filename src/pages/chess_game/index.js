@@ -12,6 +12,10 @@ let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
 
+const contextMenu = (e) => { // impede o botão direito de abrir qualquer coisa no tabuleiro
+    e.preventDefault();
+};
+
 const findCurrentSquare = (e, TableItSelf) => {
     let offsetRight = parseInt(TableItSelf.getBoundingClientRect().right);
     let offsetLeft = TableItSelf.offsetLeft;
@@ -76,6 +80,7 @@ const areTheyEqual = (firstArray, secondArray) => {
 };
 
 const ChessGame = () => {
+    // pieces state
     const [piecesArray, setPiecesArray] = useState(pieces_table);
 
     let table = [];
@@ -95,14 +100,15 @@ const ChessGame = () => {
     }
 
     const RefForPiece = useRef();
+    let active_piece = RefForPiece; // pega a peça sem renderizar de novo tudo
 
-    let active_piece = RefForPiece;
     var r = document.querySelector(":root");
-    var rs = getComputedStyle(r);
+    var rs = getComputedStyle(r); // para pegar o tamanho do tabuleiro
 
     let start_square = [];
-
     let TableItSelf = null;
+
+    let isBlackToMove = useRef(false);
 
     function grabPiece(e) {
         if (e.button === 0) {
@@ -119,10 +125,6 @@ const ChessGame = () => {
             }
         }
     }
-
-    const contextMenu = (e) => {
-        e.preventDefault();
-    };
 
     function movePiece(e) {
         if (active_piece.current) {
@@ -159,9 +161,6 @@ const ChessGame = () => {
     }
 
     function letOffPiece(e) {
-        // console.log(start_square[0]);
-        // console.log(start_square[1]);
-
         if (active_piece.current) {
             let end_square = findCurrentSquare(e, TableItSelf);
 
@@ -169,15 +168,24 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    if (validadeMoves(pieces_table, start_square, end_square, active_piece)) {
+                    if (validadeMoves(pieces_table, start_square, end_square, active_piece, isBlackToMove)) {
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
                         setPiecesArray([...piecesArray]);
+
+                        if (isBlackToMove.current === true) {
+                            isBlackToMove.current = false;
+                        } else {
+                            isBlackToMove.current = true;
+                        }
+
+                        console.log(isBlackToMove);
                     } else {
                         console.log("invalid move");
                     }
                 }
             }
+
 
             active_piece.current.style.zIndex = "";
             active_piece.current.style.position = "";

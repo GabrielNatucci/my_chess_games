@@ -99,8 +99,7 @@ const ChessGame = () => {
         }
     }
 
-    const RefForPiece = useRef();
-    let active_piece = RefForPiece; // pega a peça sem renderizar de novo tudo
+    let active_piece = useRef(); // pega a peça sem renderizar de novo tudo
 
     var r = document.querySelector(":root");
     var rs = getComputedStyle(r); // para pegar o tamanho do tabuleiro
@@ -109,6 +108,9 @@ const ChessGame = () => {
     let TableItSelf = null;
 
     let isBlackToMove = useRef(false);
+
+    let w_pawns_moved = useRef([0, 0, 0, 0, 0, 0, 0, 0]);
+    let b_pawns_moved = useRef([0, 0, 0, 0, 0, 0, 0, 0]);
 
     function grabPiece(e) {
         if (e.button === 0) {
@@ -168,7 +170,8 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    if (validadeMoves(pieces_table, start_square, end_square, active_piece, isBlackToMove)) {
+                    if (validadeMoves(pieces_table, start_square, end_square, active_piece, isBlackToMove, w_pawns_moved, b_pawns_moved)) {
+
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
                         setPiecesArray([...piecesArray]);
@@ -183,7 +186,6 @@ const ChessGame = () => {
                     }
                 }
             }
-
 
             active_piece.current.style.zIndex = "";
             active_piece.current.style.position = "";

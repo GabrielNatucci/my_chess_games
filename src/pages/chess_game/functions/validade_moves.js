@@ -12,6 +12,8 @@ const validadeMoves = (
     end_square,
     active_piece,
     isBlackToMove,
+    w_pawns_moved,
+    b_pawns_moved,
 ) => {
     // feitos: 
     // peoes brancos
@@ -38,9 +40,7 @@ const validadeMoves = (
     }
 
     if (active_piece.current.className.search("wpawn") === 0) { //peões brancos
-        console.log(active_piece);
-        if (evaluateWhitePawn(pieces_table, start_square, end_square, active_piece) === true) {
-            console.log(active_piece);
+        if (evaluateWhitePawn(pieces_table, start_square, end_square, w_pawns_moved) === true) {
             return true;
         } else {
             return false;
@@ -48,7 +48,7 @@ const validadeMoves = (
     }
 
     if (active_piece.current.className.search("bpawn") === 0) { //peões pretos
-        if (evaluateBlackPawn(pieces_table, start_square, end_square, active_piece) === true) {
+        if (evaluateBlackPawn(pieces_table, start_square, end_square, b_pawns_moved) === true) {
             console.log(active_piece.current.className);
             return true;
         } else {

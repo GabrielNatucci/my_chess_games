@@ -10,6 +10,7 @@ const Piece = ({
         return (
             <div
                 className={`${type} ${rank}${file} piece`}
+                id={type}
                 draggable={false}
             >
             </div >

@@ -5,6 +5,7 @@ const evaluateBlackPawn = (
     pieces_table,
     start_square,
     end_square,
+    active_piece,
 ) => {
     const origin_square = 6;
 
@@ -14,8 +15,11 @@ const evaluateBlackPawn = (
             if (isThereAPiece(pieces_table, end_square) === false) {
                 // caso a peça estega na casa de origem e
                 // caso o movimento seja até dois pra frente
-                if (start_square[1] === origin_square && (end_square[1] - start_square[1] >= -2))
+                if (start_square[1] === origin_square && (end_square[1] - start_square[1] >= -2)) {
+                    active_piece.current.className += " 1";
+                    console.log(active_piece.current.className);
                     return true;
+                }
 
                 // caso seja só um lance pra frente
                 if (end_square[1] - start_square[1] >= -1)

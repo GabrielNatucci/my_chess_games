@@ -38,22 +38,35 @@ const validadeMoves = (
     }
 
     if (active_piece.current.className.search("wpawn") === 0) { //peões brancos
-        if (evaluateWhitePawn(pieces_table, start_square, end_square) === true)
+        console.log(active_piece);
+        if (evaluateWhitePawn(pieces_table, start_square, end_square, active_piece) === true) {
+            console.log(active_piece);
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     if (active_piece.current.className.search("bpawn") === 0) { //peões pretos
-        if (evaluateBlackPawn(pieces_table, start_square, end_square) === true)
+        if (evaluateBlackPawn(pieces_table, start_square, end_square, active_piece) === true) {
+            console.log(active_piece.current.className);
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     if (active_piece.current.className.search("wrook") === 0 || // torres
         active_piece.current.className.search("brook") === 0) {
-        if (evaluateRook(pieces_table, start_square, end_square) === true)
+        if (evaluateRook(pieces_table, start_square, end_square, active_piece) === true)
+            return true;
+        else
+            return false;
+    }
+
+    if (active_piece.current.className.search("wking") === 0 || // reis
+        active_piece.current.className.search("bking") === 0) {
+        if (evaluateKing(pieces_table, start_square, end_square, active_piece))
             return true;
         else
             return false;
@@ -62,14 +75,6 @@ const validadeMoves = (
     if (active_piece.current.className.search("wknight") === 0 || // cavalos
         active_piece.current.className.search("bknight") === 0) {
         if (evaluateKnight(pieces_table, start_square, end_square) === true)
-            return true;
-        else
-            return false;
-    }
-
-    if (active_piece.current.className.search("wking") === 0 || // reis
-        active_piece.current.className.search("bking") === 0) {
-        if (evaluateKing(pieces_table, start_square, end_square))
             return true;
         else
             return false;

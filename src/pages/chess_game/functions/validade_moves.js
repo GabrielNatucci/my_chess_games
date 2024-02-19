@@ -4,6 +4,7 @@ import evaluateKnight from "./evaluate/evaluateKnight.js";
 import evaluateKing from "./evaluate/evaluateKing.js";
 import evaluateBishop from "./evaluate/evaluateBishop.js";
 import evaluateBlackPawn from "./evaluate/evaluateBlackPawn.js";
+import evaluateQueen from "./evaluate/evaluateQueen.js";
 
 const validadeMoves = (
     pieces_table,
@@ -20,10 +21,10 @@ const validadeMoves = (
     // bispos
     // movimentos alternados, cada um tem sua vez afinal de contas
     // peões pretos
+    // dama
 
     // falta:
     // an passant
-    // dama
     // roque
     // refatorar torres | ESSE AQ EH IMPORTANTE FAZER
 
@@ -48,7 +49,6 @@ const validadeMoves = (
             return true;
         else
             return false;
-
     }
 
     if (active_piece.current.className.search("wrook") === 0 || // torres
@@ -65,7 +65,6 @@ const validadeMoves = (
             return true;
         else
             return false;
-
     }
 
     if (active_piece.current.className.search("wking") === 0 || // reis
@@ -82,7 +81,14 @@ const validadeMoves = (
             return true;
         else
             return false;
+    }
 
+    if (active_piece.current.className.search("wqueen") === 0 || // bispos
+        active_piece.current.className.search("bqueen") === 0) {
+        if (evaluateQueen(pieces_table, start_square, end_square))
+            return true;
+        else
+            return false;
     }
 
     return true;

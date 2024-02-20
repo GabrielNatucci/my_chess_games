@@ -72,9 +72,12 @@ const evaluateRook = (
         }
 
     if (is_mov_pos === true) {
-        let class_piece = [...pieces_table[start[0]][start[1]]]; // muda o id da peça para saber que já foi movida
-        class_piece[9] = '1';
-        pieces_table[start[0]][start[1]] = class_piece.toString().replaceAll(',', '');
+        if (pieces_table[start[0]][start[1]].search("wrook") === 0 || // torres
+            pieces_table[start[0]][start[1]].search("brook") === 0) {
+            let class_piece = [...pieces_table[start[0]][start[1]]]; // muda o id da peça para saber que já foi movida
+            class_piece[9] = '1';
+            pieces_table[start[0]][start[1]] = class_piece.toString().replaceAll(',', '');
+        }
 
         return true;
     } else {

@@ -24,10 +24,10 @@ const validadeMoves = (
     // bispos
     // movimentos alternados, cada um tem sua vez afinal de contas
     // peões pretos
+    // an passant
     // dama
 
     // falta:
-    // an passant
     // roque
 
     // movimentos alternados, cada um tem sua vez afinal de contas

@@ -5,6 +5,7 @@ import evaluateKing from "./evaluate/evaluateKing.js";
 import evaluateBishop from "./evaluate/evaluateBishop.js";
 import evaluateBlackPawn from "./evaluate/evaluateBlackPawn.js";
 import evaluateQueen from "./evaluate/evaluateQueen.js";
+import areArraysEqual from "../../../core_scripts/areArraysEqual.js";
 
 const validadeMoves = (
     pieces_table,
@@ -30,31 +31,27 @@ const validadeMoves = (
     // roque
 
     // movimentos alternados, cada um tem sua vez afinal de contas
-    if (isBlackToMove.current === true) {
-        if (active_piece.current.className[0] === 'w')
-            return false;
-    } else {
-        if (active_piece.current.className[0] === 'b')
-            return false;
-    }
+
 
     let is_mov_possible = false;
 
     if ((active_piece.current.className.search("bpawn") === 0) || (active_piece.current.className.search("wpawn") === 0)) { // peões
         let origin_square;
 
-        if (active_piece.current.className.search("wpawn") === 0) { //peões brancos
-            if (start[1] === origin_square && (end[1] - start[1] === 2)) {
-                w_pawns_moved.current[pieces_table[start[0]][start[1]][7]] = 1;
-            }
+        if (active_piece.current.className.search("wpawn") === 0) { // peões brancos
+            origin_square = 1;
 
-            if (evaluateWhitePawn(pieces_table, start, end, w_pawns_moved) === true) {
-                origin_square = 1;
+            let temp_map = [...b_pawns_moved.current]; // cria um mapa temporiario
+            if (evaluateWhitePawn(pieces_table, start, end, b_pawns_moved) === true) {
+                // caso tenha sido um movimento de dois passos, atualiza o mapa de an passant
+                if (start[1] === origin_square && (end[1] - start[1] === 2)) {
+                    w_pawns_moved.current[pieces_table[start[0]][start[1]][7]] = 1; // registra no mapa esse movimento de dois lances
+                }
 
-                console.log("black: " + b_pawns_moved.current);
-                console.log("white: " + w_pawns_moved.current);
-                for (let i = 0; i < w_pawns_moved.current.length; i++) {
-                    b_pawns_moved.current[i] = 0;
+                // se uma caputa de passagem foi feita, 
+                // ele compara o mapa temporário com o que foi enviado para função, para ver se tal captura foi feita
+                if (areArraysEqual(b_pawns_moved.current, temp_map) === false) {
+                    pieces_table[end[0]][4] = "";
                 }
 
                 is_mov_possible = true;
@@ -62,22 +59,24 @@ const validadeMoves = (
         }
 
         if (active_piece.current.className.search("bpawn") === 0) { //peões pretos
-            if (start[1] === origin_square && (end[1] - start[1] === -2)) {
-                b_pawns_moved.current[pieces_table[start[0]][start[1]][7]] = 1;
-            }
+            origin_square = 6;
 
-            if (evaluateBlackPawn(pieces_table, start, end, b_pawns_moved) === true) {
-                origin_square = 6;
-                is_mov_possible = true;
-
-                console.log("black: " + b_pawns_moved.current);
-                console.log("white: " + w_pawns_moved.current);
-                for (let i = 0; i < w_pawns_moved.current.length; i++) {
-                    w_pawns_moved.current[i] = 0;
+            let temp_map = [...w_pawns_moved.current]; // cria um mapa temporiario
+            if (evaluateBlackPawn(pieces_table, start, end, w_pawns_moved) === true) {
+                // caso tenha sido um movimento de dois passos, atualiza o mapa de an passant
+                if (start[1] === origin_square && (end[1] - start[1] === -2)) {
+                    b_pawns_moved.current[pieces_table[start[0]][start[1]][7]] = 1;
                 }
+
+                // se uma caputa de passagem foi feita, 
+                // ele compara o mapa temporário com o que foi enviado para função, para ver se tal captura foi feita
+                if (areArraysEqual(w_pawns_moved.current, temp_map) === false) {
+                    pieces_table[end[0]][3] = "";
+                }
+
+                is_mov_possible = true;
             }
         }
-
     }
 
 
@@ -109,6 +108,28 @@ const validadeMoves = (
         active_piece.current.className.search("bqueen") === 0) {
         if (evaluateQueen(pieces_table, start, end))
             is_mov_possible = true;
+    }
+
+    if (is_mov_possible === true) {
+        // se o movimento for possível, 
+        // essa parte verifica se eh a vez do cidadão
+        if (isBlackToMove.current === true) {
+            if (active_piece.current.className[0] === 'w') {
+                return false;
+            } else {
+                for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
+                    w_pawns_moved.current[i] = 0;
+                }
+            }
+        } else {
+            if (active_piece.current.className[0] === 'b') {
+                return false;
+            } else {
+                for (let i = 0; i < w_pawns_moved.current.length; i++) {// limpa o mapa de an passant, para evitar furo das regras
+                    b_pawns_moved.current[i] = 0;
+                }
+            }
+        }
     }
 
     return is_mov_possible;

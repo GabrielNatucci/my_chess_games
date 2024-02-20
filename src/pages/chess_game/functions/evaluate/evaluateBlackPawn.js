@@ -3,42 +3,40 @@ import isThereAPiece from "./com/isThereAPiece";
 
 const evaluateBlackPawn = (
     pieces_table,
-    start_square,
-    end_square,
+    start,
+    end,
+    w_pawns_moved,
 ) => {
     const origin_square = 6;
 
-    // let current_p_id = [...(pieces_table[start_square[0]][start_square[1]])];
-    // current_p_id[9] = "1";
-    // let temp = current_p_id.toString().replaceAll(',', '');
-    // pieces_table[start_square[0]][start_square[1]] = temp;
+    let w_pawns_map = w_pawns_moved.current;
 
-    if (end_square[1] - start_square[1] < 0) {
-        if (start_square[0] === end_square[0]) { // caso o movimento seja andando pra frente
+    if (end[1] - start[1] < 0) {
+        if (start[0] === end[0]) { // caso o movimento seja andando pra frente
             // caso não tenha nenhuma peça casa que a peça vai ficar
-            if (isThereAPiece(pieces_table, end_square) === false) {
+            if (isThereAPiece(pieces_table, end) === false) {
                 // caso a peça estega na casa de origem e
                 // caso o movimento seja até dois pra frente
-                if (start_square[1] === origin_square && (end_square[1] - start_square[1] === -2)) {
+                if (start[1] === origin_square && (end[1] - start[1] === -2)) {
                     return true;
                 }
 
                 // caso seja só um lance pra frente
-                if (end_square[1] - start_square[1] >= -1) {
+                if (end[1] - start[1] >= -1) {
                     return true;
                 }
             }
-        } else {
-            // verifica se é uma tentativa de movimento na diagonal
-            if (
-                start_square[0] === (end_square[0] + 1) ||
-                start_square[0] === (end_square[0] - 1)
-            ) {
-                if (isThereAPiece(pieces_table, end_square) === true) {
-                    if (areSameColor(pieces_table, start_square, end_square) === false) {
-                        return true;
-                    }
+        } else if ( // verifica se é uma tentativa de movimento na diagonal
+            start[0] === (end[0] + 1) ||
+            start[0] === (end[0] - 1)
+        ) {
+            if (isThereAPiece(pieces_table, end) === true) {
+                if (areSameColor(pieces_table, start, end) === false) {
+                    return true;
                 }
+            } else if (w_pawns_map[end[0]] === 1) {
+                w_pawns_map[end[0]] = 0;
+                return true;
             }
         }
     }

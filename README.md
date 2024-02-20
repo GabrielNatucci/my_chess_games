@@ -13,7 +13,7 @@ Para rodar esse projeto rode no seu computador os comandos:
 ### `npm install`
 
 E depois:
-### `npm run`
+### `npm start`
 
 <!-- # Getting Started with Create React App -->
 <!---->

@@ -33,42 +33,53 @@ function forBody(
 
 const evaluateRook = (
     pieces_table,
-    start_square,
-    end_square,
+    start,
+    end,
 ) => {
     let is_mov_pos;
 
-    if (start_square[1] === end_square[1]) { // se o movimento for pros lados
-        if (end_square[0] > start_square[0]) { // pra direita
-            for (let i = end_square[0]; i > start_square[0]; i--) {
-                is_mov_pos = forBody(pieces_table, start_square, end_square, true, i);
-                if (is_mov_pos === false)
+    if (start[1] === end[1]) { // se o movimento for pros lados
+        if (end[0] > start[0]) { // pra direita
+            for (let i = end[0]; i > start[0]; i--) {
+                is_mov_pos = forBody(pieces_table, start, end, true, i);
+                if (is_mov_pos === false) {
                     break;
+                }
             }
         } else { // pra esquerda
-            for (let i = end_square[0]; i < start_square[0]; i++) {
-                is_mov_pos = forBody(pieces_table, start_square, end_square, true, i);
-                if (is_mov_pos === false)
+            for (let i = end[0]; i < start[0]; i++) {
+                is_mov_pos = forBody(pieces_table, start, end, true, i);
+                if (is_mov_pos === false) {
                     break;
+                }
             }
         }
-    } else { // se o movimento for pra cima ou pra baixo
-        if (end_square[1] > start_square[1]) { // pra cima
-            for (let i = end_square[1]; i > start_square[1]; i--) {
-                is_mov_pos = forBody(pieces_table, start_square, end_square, false, i);
-                if (is_mov_pos === false)
+    } else
+        if (end[1] > start[1]) { // pra cima
+            for (let i = end[1]; i > start[1]; i--) {
+                is_mov_pos = forBody(pieces_table, start, end, false, i);
+                if (is_mov_pos === false) {
                     break;
+                }
             }
         } else { // pra baixo
-            for (let i = end_square[1]; i < start_square[1]; i++) {
-                is_mov_pos = forBody(pieces_table, start_square, end_square, false, i);
-                if (is_mov_pos === false)
+            for (let i = end[1]; i < start[1]; i++) {
+                is_mov_pos = forBody(pieces_table, start, end, false, i);
+                if (is_mov_pos === false) {
                     break;
+                }
             }
         }
-    }
 
-    return is_mov_pos;
+    if (is_mov_pos === true) {
+        let class_piece = [...pieces_table[start[0]][start[1]]]; // muda o id da peça para saber que já foi movida
+        class_piece[9] = '1';
+        pieces_table[start[0]][start[1]] = class_piece.toString().replaceAll(',', '');
+
+        return true;
+    } else {
+        return false;
+    }
 };
 
 export default evaluateRook;

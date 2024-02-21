@@ -6,6 +6,7 @@ import evaluateBishop from "./evaluate/evaluateBishop.js";
 import evaluateBlackPawn from "./evaluate/evaluateBlackPawn.js";
 import evaluateQueen from "./evaluate/evaluateQueen.js";
 import areArraysEqual from "../../../core_scripts/areArraysEqual.js";
+import defineAttacked from "./define_attacked.js";
 
 const validadeMoves = (
     pieces_table,
@@ -15,6 +16,8 @@ const validadeMoves = (
     isBlackToMove,
     w_pawns_moved,
     b_pawns_moved,
+    w_pieces_attack,
+    b_pieces_attack,
 ) => {
     // feitos: 
     // peoes brancos
@@ -26,12 +29,10 @@ const validadeMoves = (
     // peões pretos
     // an passant
     // dama
-
-    // falta:
     // roque
 
-    // movimentos alternados, cada um tem sua vez afinal de contas
-
+    // falta:
+    // !not sudo legal moves
 
     let is_mov_possible = false;
 
@@ -115,7 +116,7 @@ const validadeMoves = (
         // essa parte verifica se eh a vez do cidadão
         if (isBlackToMove.current === true) {
             if (active_piece.current.className[0] === 'w') {
-                return false;
+                is_mov_possible = false;
             } else {
                 for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
                     w_pawns_moved.current[i] = 0;
@@ -123,13 +124,18 @@ const validadeMoves = (
             }
         } else {
             if (active_piece.current.className[0] === 'b') {
-                return false;
+                is_mov_possible = false;
             } else {
-                for (let i = 0; i < w_pawns_moved.current.length; i++) {// limpa o mapa de an passant, para evitar furo das regras
+                for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
                     b_pawns_moved.current[i] = 0;
                 }
             }
         }
+    }
+
+    if (is_mov_possible === true) {
+        defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack, b_pieces_attack,);
+    
     }
 
     return is_mov_possible;

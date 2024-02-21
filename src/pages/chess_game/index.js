@@ -112,6 +112,28 @@ const ChessGame = () => {
     let w_pawns_moved = useRef([0, 0, 0, 0, 0, 0, 0, 0]);
     let b_pawns_moved = useRef([0, 0, 0, 0, 0, 0, 0, 0]);
 
+    let w_pieces_attack = useRef([ // matriz que manterá quais casas são atacadas pelas brancas
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ]);
+
+    let b_pieces_attack = useRef([ // matriz que manterá quais casas são atacadas pelas pretas
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0]
+    ]);
+
     function grabPiece(e) {
         if (e.button === 0) {
             TableItSelf = document.getElementById("chess-table-id");
@@ -170,7 +192,7 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    if (validadeMoves(pieces_table, start_square, end_square, active_piece, isBlackToMove, w_pawns_moved, b_pawns_moved)) {
+                    if (validadeMoves(pieces_table, start_square, end_square, active_piece, isBlackToMove, w_pawns_moved, b_pawns_moved, w_pieces_attack, b_pieces_attack)) {
 
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";

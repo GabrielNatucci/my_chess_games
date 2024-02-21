@@ -17,7 +17,13 @@ const evaluateBlackPawn = (
             if (isThereAPiece(pieces_table, end) === false) {
                 // caso a peça estega na casa de origem e
                 // caso o movimento seja até dois pra frente
-                if (start[1] === origin_square && (end[1] - start[1] === -2)) {
+                let mid_square = [...start]
+                mid_square[1]--;
+
+                if (start[1] === origin_square && 
+                    (end[1] - start[1] === -2) && 
+                    (isThereAPiece(pieces_table, mid_square) === false)
+                    ) {
                     return true;
                 }
 
@@ -27,8 +33,9 @@ const evaluateBlackPawn = (
                 }
             }
         } else if ( // verifica se é uma tentativa de movimento na diagonal
-            start[0] === (end[0] + 1) ||
-            start[0] === (end[0] - 1)
+            (start[0] === (end[0] + 1) ||
+            start[0] === (end[0] - 1)) && 
+            end[1] - start[1] >= -1
         ) {
             if (isThereAPiece(pieces_table, end) === true) {
                 if (areSameColor(pieces_table, start, end) === false) {

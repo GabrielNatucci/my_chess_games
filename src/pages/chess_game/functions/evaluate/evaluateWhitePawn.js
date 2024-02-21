@@ -15,14 +15,14 @@ const evaluateWhitePawn = (
         if (start[0] === end[0]) { // caso o movimento seja andando pra frente
             // caso não tenha nenhuma peça casa que a peça vai ficar
             if (isThereAPiece(pieces_table, end) === false) {
+                let mid_square = [...start]
+                mid_square[1]++;
+
                 // caso a peça estega na casa de origem e
                 // caso o movimento seja até dois pra frente
-                let mid_square = [...start]
-                mid_square[1]--;
-
                 if (start[1] === origin_square && 
-                    (isThereAPiece(pieces_table, mid_square) === false) && 
-                    (end[1] - start[1] === 2)) {
+                    isThereAPiece(pieces_table, mid_square) === false && 
+                    end[1] - start[1] === 2) {
                     return true;
                 }
 

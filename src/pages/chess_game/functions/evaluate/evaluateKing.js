@@ -10,11 +10,11 @@ const rightCastleConditions = (
 
     let condition = (
         end[0] - start[0] === 2 && // se for dois movimentos pro lado
-        isThereAPiece(pieces_table, [7, 0]) === true && // se tem uma peça no lugar da torre
-        pieces_table[7][0][9] === '0' && // se a torre não se mexeu ainda
+        isThereAPiece(pieces_table, [7, start[1]]) === true && // se tem uma peça no lugar da torre
+        pieces_table[7][start[1]][9] === '0' && // se a torre não se mexeu ainda
         pieces_table[start[0]][start[1]][6] === '0' && // se o rei não se mexeu ainda
-        isThereAPiece(pieces_table, [5, 0]) === false && // se não tem nenhuma peça no caminho
-        isThereAPiece(pieces_table, [6, 0]) === false
+        isThereAPiece(pieces_table, [5, start[1]]) === false && // se não tem nenhuma peça no caminho
+        isThereAPiece(pieces_table, [6, start[1]]) === false
     )
 
     return condition;
@@ -29,12 +29,12 @@ const leftCastleConditions = (
 
     let condition = (
         end[0] - start[0] === -2 && // se for dois movimentos pro lado
-        isThereAPiece(pieces_table, [0, 0]) === true && // se tem uma peça no lugar da torre
-        pieces_table[0][0][9] === '0' && // se a torre não se mexeu ainda
+        isThereAPiece(pieces_table, [0, start[1]]) === true && // se tem uma peça no lugar da torre
+        pieces_table[0][start[1]][9] === '0' && // se a torre não se mexeu ainda
         pieces_table[start[0]][start[1]][6] === '0' && // se o rei não se mexeu ainda
-        isThereAPiece(pieces_table, [1, 0]) === false && // se não tem nenhuma peça no caminho
-        isThereAPiece(pieces_table, [2, 0]) === false &&
-        isThereAPiece(pieces_table, [3, 0]) === false
+        isThereAPiece(pieces_table, [1, start[1]]) === false && // se não tem nenhuma peça no caminho
+        isThereAPiece(pieces_table, [2, start[1]]) === false &&
+        isThereAPiece(pieces_table, [3, start[1]]) === false
     )
 
     return condition;
@@ -54,24 +54,24 @@ const evaluateKing = (
         is_move_possible = true;
     } else {
         if (rightCastleConditions(pieces_table, start, end) === true) {
-            let class_piece = [...pieces_table[7][0]]; // muda o id da peça para saber que já foi movida
+            let class_piece = [...pieces_table[7][start[1]]]; // muda o id da peça para saber que já foi movida
             class_piece[9] = '1';
 
-            pieces_table[7][0] = class_piece.toString().replaceAll(',', '');
-            pieces_table[5][0] = pieces_table[7][0];
-            pieces_table[7][0] = '';
+            pieces_table[7][start[1]] = class_piece.toString().replaceAll(',', '');
+            pieces_table[5][start[1]] = pieces_table[7][start[1]];
+            pieces_table[7][start[1]] = '';
 
 
             is_move_possible = true;
         }
 
         if (leftCastleConditions(pieces_table, start, end) === true) {
-            let class_piece = [...pieces_table[0][0]]; // muda o id da peça para saber que já foi movida
+            let class_piece = [...pieces_table[0][start[1]]]; // muda o id da peça para saber que já foi movida
             class_piece[9] = '1';
 
-            pieces_table[0][0] = class_piece.toString().replaceAll(',', '');
-            pieces_table[3][0] = pieces_table[0][0];
-            pieces_table[0][0] = '';
+            pieces_table[0][start[1]] = class_piece.toString().replaceAll(',', '');
+            pieces_table[3][start[1]] = pieces_table[0][start[1]];
+            pieces_table[0][start[1]] = '';
 
             is_move_possible = true;
         }

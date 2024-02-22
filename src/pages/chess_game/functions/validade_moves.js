@@ -135,7 +135,6 @@ const validadeMoves = (
 
     if (is_mov_possible === true) {
         defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack, b_pieces_attack,);
-    
     }
 
     return is_mov_possible;

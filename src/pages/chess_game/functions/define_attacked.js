@@ -16,9 +16,8 @@ const defineAttacked = (
                     wpanAttacks(pieces_table, square, w_pieces_attack.current);
                 }
             }
-            console.log(w_pieces_attack.current[i]);
+            // console.log(w_pieces_attack.current[i]);
         }
-
     }
 }
 

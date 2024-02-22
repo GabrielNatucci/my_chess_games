@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import ChessTable from "../../components/common/chess_table/chess_table";
-import "./styles.css";
 import Square from "../../components/common/Square/Square";
 import Piece from "../../components/common/pieces/Piece";
 import definePieces from "./functions/define_pieces";
@@ -8,7 +7,10 @@ import defineHorizonal from "./functions/define_horizontal";
 import defineVertical from "./functions/define_vertical";
 import validadeMoves from "./functions/validade_moves";
 import Player from "../../components/common/player/player";
+import TrackMovements from "../../components/track_movements/TrackMovements";
 
+import "./styles.css";
+import defineTable from "./functions/define_table";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -81,24 +83,10 @@ const areTheyEqual = (firstArray, secondArray) => {
 };
 
 const ChessGame = () => {
-    // pieces state
     const [piecesArray, setPiecesArray] = useState(pieces_table);
 
-    let table = [];
-    for (let j = vertical.length - 1; j >= 0; j--) {
-        for (let i = 0; i < horizontal.length; i++) {
-            table.push(
-                <Square
-                    key={`${i} + ${j}`}
-                    Row={j}
-                    Column={i}
-                    Text={`${horizontal[i]}${vertical[j]}`}
-                >
-                    <Piece type={piecesArray[i][j]} file={i + 1} rank={j + 1} />
-                </Square>,
-            );
-        }
-    }
+    // table definition
+    let table = defineTable(vertical, horizontal, piecesArray);
 
     let active_piece = useRef(); // pega a peça sem renderizar de novo tudo
 
@@ -134,6 +122,8 @@ const ChessGame = () => {
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0]
     ]);
+
+    let movs_str = useRef("");
 
     function grabPiece(e) {
         if (e.button === 0) {
@@ -193,7 +183,17 @@ const ChessGame = () => {
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    if (validadeMoves(pieces_table, start_square, end_square, active_piece, isBlackToMove, w_pawns_moved, b_pawns_moved, w_pieces_attack, b_pieces_attack)) {
+                    if (validadeMoves(
+                        pieces_table,
+                        start_square,
+                        end_square,
+                        active_piece,
+                        isBlackToMove,
+                        w_pawns_moved,
+                        b_pawns_moved,
+                        w_pieces_attack,
+                        b_pieces_attack,
+                        )) {
 
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
@@ -204,6 +204,9 @@ const ChessGame = () => {
                         } else {
                             isBlackToMove.current = true;
                         }
+
+                        // adiciona o movimento para a string de movimentos
+                        movs_str.current += `${horizontal[end_square[0]]}${vertical[end_square[1]]} `
                     } else {
                         // console.log("invalid move");
                     }
@@ -218,25 +221,32 @@ const ChessGame = () => {
 
     return (
         <main
-            className="d-flex justify-content-center bg-dark"
+            className="d-flex justify-content-center"
             onMouseUp={letOffPiece}
         >
-            <div id="players_name" className="d-flex flex-column justify-content-center">
-                <Player player_name={"Random Noob"} />
-                <ChessTable
-                    grabPiece={grabPiece}
-                    onContextMenu={contextMenu}
-                    movePiece={movePiece}
-                    horizontal={horizontal}
-                    vertical={vertical}
-                    table={table}
-                    pieces_table={piecesArray}
-                />
-                <Player player_name={"You"} />
+            <div className="d-flex justify-content-center">
+                <div className="players_name_table d-flex flex-column justify-content-center">
+                    <Player player_name={"Random Noob"} />
+                    <ChessTable
+                        grabPiece={grabPiece}
+                        onContextMenu={contextMenu}
+                        movePiece={movePiece}
+                        horizontal={horizontal}
+                        vertical={vertical}
+                        table={table}
+                        pieces_table={piecesArray}
+                    />
+                    <Player player_name={"You"} />
+                </div>
+
+                <div className="d-flex flex-column justify-content-center">
+                    <TrackMovements text={movs_str.current} 
+                        horizontal={horizontal} 
+                        vertical={vertical}
+                    />
+                </div>
             </div>
 
-            <div>
-            </div>
         </main>
     );
 };

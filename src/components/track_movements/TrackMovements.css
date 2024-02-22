@@ -1,0 +1,7 @@
+.track-movements {
+    height: var(--table-size);
+    width : calc(var(--table-size)/2.5);
+    background-color: #232323;
+    border-radius: 0;
+    border: 0;
+}

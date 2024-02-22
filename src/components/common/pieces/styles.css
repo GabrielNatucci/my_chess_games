@@ -1,6 +1,6 @@
 :root {
     /* --table-size: calc(var(--piece-size) / 2); */
-    --piece-size: calc(var(--table-size) / 8);
+    --piece-size: calc(var(--table-size) / 8.4);
     --piece-half: calc(var(--piece-size) / 2);
 }
 

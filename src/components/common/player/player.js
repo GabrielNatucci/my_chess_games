@@ -2,7 +2,7 @@ import "./player.css";
 
 const Player = ({ player_name }) => {
     return (
-        <div className="player d-inline-flex align-items-center">
+        <div className="player d-inline-flex justify-content-start ">
             <p className="fw-bold">{player_name}</p>
         </div>
     )

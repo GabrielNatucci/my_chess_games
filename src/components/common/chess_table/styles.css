@@ -7,7 +7,6 @@
 }
 
 .chess-table {
-    margin: auto;
     display: grid;
     grid-template-columns: repeat(8, calc(var(--table-size)/8));
     grid-template-rows: repeat(8, calc(var(--table-size)/8));

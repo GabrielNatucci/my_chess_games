@@ -4,7 +4,7 @@
 
 .player {
     width: 100%;
-    height: 100%;
+    margin: 3vh 0;
 }
 
 .player p {

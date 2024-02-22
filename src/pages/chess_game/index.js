@@ -7,6 +7,7 @@ import definePieces from "./functions/define_pieces";
 import defineHorizonal from "./functions/define_horizontal";
 import defineVertical from "./functions/define_vertical";
 import validadeMoves from "./functions/validade_moves";
+import Player from "../../components/common/player/player";
 
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
@@ -217,18 +218,25 @@ const ChessGame = () => {
 
     return (
         <main
-            className="d-flex justify-content-center"
+            className="d-flex justify-content-center bg-dark"
             onMouseUp={letOffPiece}
         >
-            <ChessTable
-                grabPiece={grabPiece}
-                onContextMenu={contextMenu}
-                movePiece={movePiece}
-                horizontal={horizontal}
-                vertical={vertical}
-                table={table}
-                pieces_table={piecesArray}
-            />
+            <div id="players_name" className="d-flex flex-column justify-content-center">
+                <Player player_name={"Random Noob"} />
+                <ChessTable
+                    grabPiece={grabPiece}
+                    onContextMenu={contextMenu}
+                    movePiece={movePiece}
+                    horizontal={horizontal}
+                    vertical={vertical}
+                    table={table}
+                    pieces_table={piecesArray}
+                />
+                <Player player_name={"You"} />
+            </div>
+
+            <div>
+            </div>
         </main>
     );
 };

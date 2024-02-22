@@ -1,0 +1,14 @@
+:root {
+    --player-image: calc(var(--table-size)/10);
+}
+
+.player {
+    width: 100%;
+    height: 100%;
+}
+
+.player p {
+    color: white;
+    display: inline-block;
+    margin: auto;
+}

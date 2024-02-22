@@ -207,8 +207,6 @@ const ChessGame = () => {
 
                         // adiciona o movimento para a string de movimentos
                         movs_str.current += `${horizontal[end_square[0]]}${vertical[end_square[1]]} `
-                    } else {
-                        // console.log("invalid move");
                     }
                 }
             }

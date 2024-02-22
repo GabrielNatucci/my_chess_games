@@ -1,0 +1,6 @@
+/* var(--mov-tracking) variável do tamanho do movement tracking*/
+
+.moves {
+    display: grid;
+    grid-template-columns: repeat(2, calc(var(--mov-tracking)/2));
+}

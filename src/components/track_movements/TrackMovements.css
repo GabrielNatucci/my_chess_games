@@ -1,6 +1,10 @@
+:root {
+    --mov-tracking: calc(var(--table-size)/2.5);
+}
+
 .track-movements {
     height: var(--table-size);
-    width : calc(var(--table-size)/2.5);
+    width : var(--mov-tracking);
     background-color: #232323;
     border-radius: 0;
     border: 0;

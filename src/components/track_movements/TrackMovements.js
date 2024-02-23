@@ -9,8 +9,8 @@ const TrackMovements = ({text, horizontal, vertical}) => {
 
     return (
         <Card key="movement_tracking" text="light" className="track-movements">
-            <Card.Header>Movimentos</Card.Header>
-            <Card.Body>
+            <Card.Header className="text-center">Movimentos</Card.Header>
+            <Card.Body className="p-0 m-0">
                 <Moves text={text} />
             </Card.Body>
         </Card>

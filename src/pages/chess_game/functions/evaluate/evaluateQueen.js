@@ -8,23 +8,23 @@ import evaluateRook from "./evaluateRook";
 // Fiz isso porque economiza muitas linhas de código
 const evaluateQueen = (
     pieces_table,
-    start_square,
-    end_square,
+    start,
+    end,
     movs_str,
 ) => {
 
     let is_mov_pos;
 
-    if (start_square[0] === end_square[0] || start_square[1] === end_square[1]) {
-        is_mov_pos = evaluateRook(pieces_table, start_square, end_square, movs_str);
+    if (start[0] === end[0] || start[1] === end[1]) {
+        is_mov_pos = evaluateRook(pieces_table, start, end, movs_str);
     } else {
-        is_mov_pos = evaluateBishop(pieces_table, start_square, end_square, movs_str);
+        is_mov_pos = evaluateBishop(pieces_table, start, end, movs_str);
     }
 
     if (is_mov_pos === true) {
         movs_str.current += "Q";
 
-        if (isThereAPiece(pieces_table, end_square))
+        if (isThereAPiece(pieces_table, end))
             movs_str.current += "x";
     }
 

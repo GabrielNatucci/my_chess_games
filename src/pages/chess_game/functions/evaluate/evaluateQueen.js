@@ -1,3 +1,4 @@
+import isThereAPiece from "./com/isThereAPiece";
 import evaluateBishop from "./evaluateBishop";
 import evaluateRook from "./evaluateRook";
 
@@ -22,6 +23,9 @@ const evaluateQueen = (
 
     if (is_mov_pos === true) {
         movs_str.current += "Q";
+
+        if (isThereAPiece(pieces_table, end_square))
+            movs_str.current += "x";
     }
 
     return is_mov_pos

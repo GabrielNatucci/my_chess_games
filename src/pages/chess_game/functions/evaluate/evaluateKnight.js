@@ -1,4 +1,5 @@
 import areSameColor from "./com/areSameColors";
+import isThereAPiece from "./com/isThereAPiece";
 
 const evaluateKnight = (
     pieces_table,
@@ -27,6 +28,11 @@ const evaluateKnight = (
             if (end_square[0] === temp[0] && end_square[1] === temp[1]) {
                 if (areSameColor(pieces_table, start_square, temp) === false) { // se forem de cores diferentes
                     movs_str.current += "N";
+
+                    if (isThereAPiece(pieces_table, end_square)) {
+                        movs_str.current += "x";
+                    }
+
                     is_mov_pos = true;
                     break;
                 }

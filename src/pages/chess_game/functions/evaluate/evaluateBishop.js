@@ -79,8 +79,13 @@ const evaluateBishop = (
         if (areSameColor(pieces_table, start_square, end_square) === false) {
             if (pieces_table[start_square[0]][start_square[1]].search("wbishop") === 0 || // bispos
                 pieces_table[start_square[0]][start_square[1]].search("bbishop") === 0) { 
+
                 movs_str.current += "B";
+
+                if (isThereAPiece(pieces_table, end_square))
+                movs_str.current += "x";
             }
+
             return true;
         }
     }

@@ -5,6 +5,7 @@ const defineTable = (
     vertical, 
     horizontal,
     piecesArray,
+    w_pieces_attack,
 ) => {
     let local_table = [];
 
@@ -16,6 +17,7 @@ const defineTable = (
                     Row={j}
                     Column={i}
                     Text={`${horizontal[i]}${vertical[j]}`}
+                    attacked={w_pieces_attack.current[i][j]}
                 >
                     <Piece type={piecesArray[i][j]} file={i + 1} rank={j + 1} />
                 </Square>,

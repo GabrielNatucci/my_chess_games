@@ -6,7 +6,7 @@ import evaluateBishop from "./evaluate/evaluateBishop.js";
 import evaluateBlackPawn from "./evaluate/evaluateBlackPawn.js";
 import evaluateQueen from "./evaluate/evaluateQueen.js";
 import areArraysEqual from "../../../core_scripts/areArraysEqual.js";
-import defineAttacked from "./define_attacked.js";
+// import defineAttacked from "./define_attacked.js";
 
 const validadeMoves = (
     pieces_table,
@@ -154,7 +154,6 @@ const validadeMoves = (
             movs_str.current += `${horizontal[end[0]]}${vertical[end[1]]} `;
         }
 
-        defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack, b_pieces_attack,);
     }
 
     return is_mov_possible;

@@ -9,6 +9,7 @@ import TrackMovements from "../../components/track_movements/TrackMovements";
 
 import "./styles.css";
 import defineTable from "./functions/define_table";
+import defineAttacked from "./functions/define_attacked";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -84,8 +85,6 @@ const ChessGame = () => {
     const [piecesArray, setPiecesArray] = useState(pieces_table);
 
     // table definition
-    let table = defineTable(vertical, horizontal, piecesArray);
-
     let active_piece = useRef(); // pega a peça sem renderizar de novo tudo
 
     var r = document.querySelector(":root");
@@ -120,6 +119,8 @@ const ChessGame = () => {
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0]
     ]);
+
+    let table = defineTable(vertical, horizontal, piecesArray, w_pieces_attack);
 
     let movs_str = useRef("");
 
@@ -204,13 +205,12 @@ const ChessGame = () => {
 
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
+                        defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack, b_pieces_attack);
+
                         setPiecesArray([...piecesArray]);
-
-                        console.log(movs_str);
-
-                        // adiciona o movimento para a string de movimentos
                     }
                 }
+
             }
 
             active_piece.current.style.zIndex = "";
@@ -234,7 +234,6 @@ const ChessGame = () => {
                         horizontal={horizontal}
                         vertical={vertical}
                         table={table}
-                        pieces_table={piecesArray}
                     />
                     <Player player_name={"You"} />
                 </div>

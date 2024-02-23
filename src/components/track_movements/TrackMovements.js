@@ -6,7 +6,6 @@ const TrackMovements = ({text, horizontal, vertical}) => {
     //! POR ENQUANTO NÃO VOU FAZER FUNCIONALIDADE
     // por enquanto o foco é fazer algo pra olhar
 
-
     return (
         <Card key="movement_tracking" text="light" className="track-movements">
             <Card.Header className="text-center">Movimentos</Card.Header>

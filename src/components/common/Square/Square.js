@@ -1,6 +1,6 @@
 import "./styles.css"
 
-const Square = ({ Row, Column, Text, children }) => {
+const Square = ({ Row, Column, Text, children, attacked}) => {
     let cord = Row + " " + Column;
 
     let dark = '#7a5330'
@@ -16,12 +16,21 @@ const Square = ({ Row, Column, Text, children }) => {
         bg_color = light;
     }
 
-    return (
-        <div className={className} key={cord} style={{ backgroundColor: bg_color }}>
-            {/* <p>{Text}</p> */}
-            {children}
-        </div>
-    )
+    if (attacked === 1) {
+        return (
+            <div className={className} key={cord} style={{ backgroundColor: bg_color }}>
+                <p className="text-black" >{Text}</p>
+                {children}
+            </div>
+        )
+    } else {
+        return (
+            <div className={className} key={cord} style={{ backgroundColor: bg_color }}>
+                {/* <p>{Text}</p> */}
+                {children}
+            </div>
+        )
+    }
 }
 
 export default Square;

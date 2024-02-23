@@ -11,8 +11,6 @@ const evaluateBlackPawn = (
 ) => {
     const origin_square = 6;
 
-    console.log(horizontal);
-
     let w_pawns_map = w_pawns_moved.current;
 
     if (end[1] - start[1] < 0) {

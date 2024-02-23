@@ -1,5 +1,4 @@
 const knightAttacks = (
-    pieces_table,
     square,
     w_pieces_attack, 
 ) => {
@@ -16,7 +15,6 @@ const knightAttacks = (
             temp[0] = square[0] + possible_moves[i - 4][1];
             temp[1] = square[1] + possible_moves[i - 4][0];
         }
-
 
         if ((temp[0] < 8 && temp[0] >= 0) &&
             (temp[1] < 8 && temp[1] >= 0)) { // filtra movimentos que são dentro do tabuleiro

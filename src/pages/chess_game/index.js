@@ -81,7 +81,9 @@ const areTheyEqual = (firstArray, secondArray) => {
     return 1;
 };
 
-const ChessGame = () => {
+const ChessGame = ({
+    debug_mode
+}) => {
     const [piecesArray, setPiecesArray] = useState(pieces_table);
 
     // table definition
@@ -120,7 +122,7 @@ const ChessGame = () => {
         [0, 0, 0, 0, 0, 0, 0, 0]
     ]);
 
-    let table = defineTable(vertical, horizontal, piecesArray, w_pieces_attack);
+    let table = defineTable(vertical, horizontal, piecesArray, w_pieces_attack, debug_mode);
 
     let movs_str = useRef("");
 

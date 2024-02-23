@@ -1,4 +1,5 @@
 import wBishopAttacks from "./attack_squares/bishop_attacks";
+import kingAttacks from "./attack_squares/king_attacks";
 import knightAttacks from "./attack_squares/knights_attacks";
 import wpawnAttacks from "./attack_squares/wpawn_attacks";
 
@@ -22,16 +23,16 @@ const defineAttacked = ( // função que atualiza o mapa de peças attacadas
         for (let j = 0; j < 8; j++) {
             square = [i, j];
             if (pieces_table[square[0]][square[1]].search("wpawn") === 0)  // peão
-                wpawnAttacks(pieces_table, square, w_pieces_attack);
+                wpawnAttacks(square, w_pieces_attack);
 
             if (pieces_table[square[0]][square[1]].search("wknight") === 0) // cavalo
-                knightAttacks(pieces_table, square, w_pieces_attack);
+                knightAttacks(square, w_pieces_attack);
                 
             if (pieces_table[square[0]][square[1]].search("wbishop") === 0) // bispo
                 wBishopAttacks(pieces_table, square, w_pieces_attack);
 
             if (pieces_table[square[0]][square[1]].search("wking") === 0) // bispo
-                wBishopAttacks(pieces_table, square, w_pieces_attack);
+                kingAttacks(square, w_pieces_attack);
         }
     }
 }

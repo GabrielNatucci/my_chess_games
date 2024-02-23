@@ -18,6 +18,9 @@ const validadeMoves = (
     b_pawns_moved,
     w_pieces_attack,
     b_pieces_attack,
+    movs_str,
+    horizontal,
+    vertical,
 ) => {
     // feitos: 
     // peoes brancos
@@ -34,7 +37,10 @@ const validadeMoves = (
     // falta:
     // !not sudo legal moves
 
+    // movs_str.current += `${horizontal[end_square[0]]}${vertical[end_square[1]]} `
+
     let is_mov_possible = false;
+    let is_a_castle = false;
 
     if ((active_piece.current.className.search("bpawn") === 0) || (active_piece.current.className.search("wpawn") === 0)) { // peões
         let origin_square;
@@ -43,7 +49,7 @@ const validadeMoves = (
             origin_square = 1;
 
             let temp_map = [...b_pawns_moved.current]; // cria um mapa temporiario
-            if (evaluateWhitePawn(pieces_table, start, end, b_pawns_moved) === true) {
+            if (evaluateWhitePawn(pieces_table, start, end, b_pawns_moved, movs_str, horizontal) === true) {
                 // caso tenha sido um movimento de dois passos, atualiza o mapa de an passant
                 if (start[1] === origin_square && (end[1] - start[1] === 2)) {
                     w_pawns_moved.current[pieces_table[start[0]][start[1]][7]] = 1; // registra no mapa esse movimento de dois lances
@@ -63,7 +69,7 @@ const validadeMoves = (
             origin_square = 6;
 
             let temp_map = [...w_pawns_moved.current]; // cria um mapa temporiario
-            if (evaluateBlackPawn(pieces_table, start, end, w_pawns_moved) === true) {
+            if (evaluateBlackPawn(pieces_table, start, end, w_pawns_moved, movs_str, horizontal) === true) {
                 // caso tenha sido um movimento de dois passos, atualiza o mapa de an passant
                 if (start[1] === origin_square && (end[1] - start[1] === -2)) {
                     b_pawns_moved.current[pieces_table[start[0]][start[1]][7]] = 1;
@@ -83,32 +89,42 @@ const validadeMoves = (
 
     if (active_piece.current.className.search("wrook") === 0 || // torres
         active_piece.current.className.search("brook") === 0) {
-        if (evaluateRook(pieces_table, start, end, active_piece) === true)
+        if (evaluateRook(pieces_table, start, end, movs_str) === true) {
             is_mov_possible = true;
+        }
     }
 
     if (active_piece.current.className.search("wking") === 0 || // reis
         active_piece.current.className.search("bking") === 0) {
-        if (evaluateKing(pieces_table, start, end, active_piece))
+
+        if (evaluateKing(pieces_table, start, end,  movs_str)) {
             is_mov_possible = true;
+        }
+
+        if (is_mov_possible === true && (end[0] - start[0] === -2 || end[0] - start[0] === 2)) {
+            is_a_castle = true;
+        }
     }
 
     if (active_piece.current.className.search("wknight") === 0 || // cavalos
         active_piece.current.className.search("bknight") === 0) {
-        if (evaluateKnight(pieces_table, start, end) === true)
+        if (evaluateKnight(pieces_table, start, end, movs_str) === true) {
             is_mov_possible = true;
+        }
     }
 
     if (active_piece.current.className.search("wbishop") === 0 || // bispos
         active_piece.current.className.search("bbishop") === 0) {
-        if (evaluateBishop(pieces_table, start, end))
+        if (evaluateBishop(pieces_table, start, end, movs_str)) {
             is_mov_possible = true;
+        }
     }
 
     if (active_piece.current.className.search("wqueen") === 0 || // bispos
         active_piece.current.className.search("bqueen") === 0) {
-        if (evaluateQueen(pieces_table, start, end))
+        if (evaluateQueen(pieces_table, start, end, movs_str)) {
             is_mov_possible = true;
+        }
     }
 
     if (is_mov_possible === true) {
@@ -134,6 +150,10 @@ const validadeMoves = (
     }
 
     if (is_mov_possible === true) {
+        if (is_a_castle === false) {
+            movs_str.current += `${horizontal[end[0]]}${vertical[end[1]]} `;
+        }
+
         defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack, b_pieces_attack,);
     }
 

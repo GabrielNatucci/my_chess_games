@@ -35,6 +35,7 @@ const evaluateRook = (
     pieces_table,
     start,
     end,
+    movs_str
 ) => {
     let is_mov_pos;
 
@@ -72,12 +73,23 @@ const evaluateRook = (
         }
 
     if (is_mov_pos === true) {
-        if (pieces_table[start[0]][start[1]].search("wrook") === 0 || // torres
+        if (pieces_table[start[0]][start[1]].search("wrook") === 0 || // torres, tive que fazer essa adição adicional por causa da reciclagem dessa função
             pieces_table[start[0]][start[1]].search("brook") === 0) {
             let class_piece = [...pieces_table[start[0]][start[1]]]; // muda o id da peça para saber que já foi movida
             class_piece[9] = '1';
             pieces_table[start[0]][start[1]] = class_piece.toString().replaceAll(',', '');
         }
+
+
+        if (pieces_table[start[0]][start[1]].search("wrook") === 0 || // torres
+            pieces_table[start[0]][start[1]].search("brook") === 0) { 
+                movs_str.current += "R";
+
+                if (isThereAPiece(pieces_table, end) === true) {
+                    movs_str.current += "x";
+                }
+            }
+
 
         return true;
     } else {

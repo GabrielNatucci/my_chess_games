@@ -4,6 +4,7 @@ const evaluateKnight = (
     pieces_table,
     start_square,
     end_square,
+    movs_str,
 ) => {
     let is_mov_pos = false;
 
@@ -25,6 +26,7 @@ const evaluateKnight = (
 
             if (end_square[0] === temp[0] && end_square[1] === temp[1]) {
                 if (areSameColor(pieces_table, start_square, temp) === false) { // se forem de cores diferentes
+                    movs_str.current += "N";
                     is_mov_pos = true;
                     break;
                 }

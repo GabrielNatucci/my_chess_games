@@ -44,11 +44,14 @@ const evaluateKing = (
     pieces_table,
     start,
     end,
+    movs_str,
 ) => {
     let is_move_possible = false;
 
     let y_cond = (end[0] <= start[0] + 1 && end[0] >= start[0] - 1);
     let x_cond = (end[1] <= start[1] + 1 && end[1] >= start[1] - 1);
+
+    let is_a_castle = false;
 
     if ((y_cond === true && x_cond === true) && (areSameColor(pieces_table, start, end) === false)) {
         is_move_possible = true;
@@ -61,7 +64,9 @@ const evaluateKing = (
             pieces_table[5][start[1]] = pieces_table[7][start[1]];
             pieces_table[7][start[1]] = '';
 
+            movs_str.current += "O-O "; 
 
+            is_a_castle = true;
             is_move_possible = true;
         }
 
@@ -73,6 +78,9 @@ const evaluateKing = (
             pieces_table[3][start[1]] = pieces_table[0][start[1]];
             pieces_table[0][start[1]] = '';
 
+            movs_str.current += "O-O-O "; 
+
+            is_a_castle = true;
             is_move_possible = true;
         }
     }
@@ -81,7 +89,15 @@ const evaluateKing = (
         let class_piece = [...pieces_table[start[0]][start[1]]]; // muda o id da peça para saber que já foi movida
         class_piece[6] = '1';
         pieces_table[start[0]][start[1]] = class_piece.toString().replaceAll(',', '');
+        
+        if (is_a_castle === false) {
+            movs_str.current += "K"; 
+            if (is_move_possible === true) {
+                movs_str.current += "x";
+            }
+        }
     }
+
 
     return is_move_possible;
 

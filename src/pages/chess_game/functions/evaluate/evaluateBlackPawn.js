@@ -6,8 +6,12 @@ const evaluateBlackPawn = (
     start,
     end,
     w_pawns_moved,
+    movs_str,
+    horizontal,
 ) => {
     const origin_square = 6;
+
+    console.log(horizontal);
 
     let w_pawns_map = w_pawns_moved.current;
 
@@ -36,12 +40,19 @@ const evaluateBlackPawn = (
             start[0] === (end[0] - 1)) && 
             end[1] - start[1] >= -1
         ) {
+            let is_mov_pos = false;
+
             if (isThereAPiece(pieces_table, end) === true) {
                 if (areSameColor(pieces_table, start, end) === false) {
-                    return true;
+                    is_mov_pos = true;
                 }
             } else if (w_pawns_map[end[0]] === 1) {
                 w_pawns_map[end[0]] = 0;
+                is_mov_pos = true;
+            }
+
+            if (is_mov_pos === true) {
+                movs_str.current += `${horizontal[start[0]]}x`;
                 return true;
             }
         }

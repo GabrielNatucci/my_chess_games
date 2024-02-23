@@ -9,12 +9,22 @@ const evaluateQueen = (
     pieces_table,
     start_square,
     end_square,
+    movs_str,
 ) => {
+
+    let is_mov_pos;
+
     if (start_square[0] === end_square[0] || start_square[1] === end_square[1]) {
-        return evaluateRook(pieces_table, start_square, end_square);
+        is_mov_pos = evaluateRook(pieces_table, start_square, end_square, movs_str);
     } else {
-        return evaluateBishop(pieces_table, start_square, end_square);
+        is_mov_pos = evaluateBishop(pieces_table, start_square, end_square, movs_str);
     }
+
+    if (is_mov_pos === true) {
+        movs_str.current += "Q";
+    }
+
+    return is_mov_pos
 };
 
 export default evaluateQueen;

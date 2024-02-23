@@ -6,6 +6,8 @@ const evaluateWhitePawn = (
     start,
     end,
     b_pawns_moved,
+    movs_str,
+    horizontal
 ) => {
     const origin_square = 1;
 
@@ -36,12 +38,19 @@ const evaluateWhitePawn = (
             start[0] === (end[0] - 1)) && 
             end[1] - start[1] <= 1
         ) {
+            let is_mov_pos = false;
+
             if (isThereAPiece(pieces_table, end) === true) {
                 if (areSameColor(pieces_table, start, end) === false) {
-                    return true;
+                    is_mov_pos = true;
                 }
             } else if (b_pawns_map[end[0]] === 1) {
                 b_pawns_map[end[0]] = 0;
+                is_mov_pos = true;
+            }
+
+            if (is_mov_pos === true) {
+                movs_str.current += `${horizontal[start[0]]}x`;
                 return true;
             }
         }

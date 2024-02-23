@@ -1,7 +1,5 @@
 import React, { useRef, useState } from "react";
 import ChessTable from "../../components/common/chess_table/chess_table";
-import Square from "../../components/common/Square/Square";
-import Piece from "../../components/common/pieces/Piece";
 import definePieces from "./functions/define_pieces";
 import defineHorizonal from "./functions/define_horizontal";
 import defineVertical from "./functions/define_vertical";
@@ -184,20 +182,19 @@ const ChessGame = () => {
                     pieces_table = [...piecesArray];
 
                     if (validadeMoves(
-                        pieces_table,
-                        start_square,
-                        end_square,
-                        active_piece,
-                        isBlackToMove,
-                        w_pawns_moved,
-                        b_pawns_moved,
-                        w_pieces_attack,
-                        b_pieces_attack,
+                            pieces_table,
+                            start_square,
+                            end_square,
+                            active_piece,
+                            isBlackToMove,
+                            w_pawns_moved,
+                            b_pawns_moved,
+                            w_pieces_attack,
+                            b_pieces_attack,
+                            movs_str,
+                            horizontal,
+                            vertical,
                         )) {
-
-                        pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
-                        pieces_table[start_square[0]][start_square[1]] = "";
-                        setPiecesArray([...piecesArray]);
 
                         if (isBlackToMove.current === true) {
                             isBlackToMove.current = false;
@@ -205,8 +202,13 @@ const ChessGame = () => {
                             isBlackToMove.current = true;
                         }
 
+                        pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
+                        pieces_table[start_square[0]][start_square[1]] = "";
+                        setPiecesArray([...piecesArray]);
+
+                        console.log(movs_str);
+
                         // adiciona o movimento para a string de movimentos
-                        movs_str.current += `${horizontal[end_square[0]]}${vertical[end_square[1]]} `
                     }
                 }
             }

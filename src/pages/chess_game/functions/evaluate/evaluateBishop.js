@@ -21,7 +21,8 @@ const forBody = (
 const evaluateBishop = (
     pieces_table,
     start_square,
-    end_square
+    end_square,
+    movs_str,
 ) => {
     let diff_x = (Math.abs(start_square[0] - end_square[0]));
     let diff_y = (Math.abs(start_square[1] - end_square[1]));
@@ -72,11 +73,17 @@ const evaluateBishop = (
         is_mov_posible = false;
     }
 
-    if (is_mov_posible === true)
+    if (is_mov_posible === true) {
         // se não tiver nenhuma peça no meio do caminho e se
         // a casa não tiver uma peça do mesmo time, o movimento é possível. Então retorna true;
-        if (areSameColor(pieces_table, start_square, end_square) === false)
+        if (areSameColor(pieces_table, start_square, end_square) === false) {
+            if (pieces_table[start_square[0]][start_square[1]].search("wbishop") === 0 || // bispos
+                pieces_table[start_square[0]][start_square[1]].search("bbishop") === 0) { 
+                movs_str.current += "B";
+            }
             return true;
+        }
+    }
 
     return false;
 

@@ -1,5 +1,6 @@
 :root {
     --players_name: calc(var(--table-size) + 4vh);
+    --bg-color: #1b1b1d;
 }
 
 main {
@@ -7,9 +8,5 @@ main {
     margin: 0%;
     width: 100%;
     height: 100%;
-    background-color: #1b1b1d;
-}
-
-#why_is_not_working {
-    /* height: calc(var(--table-size)); */
+    background-color: var(--bg-color);
 }

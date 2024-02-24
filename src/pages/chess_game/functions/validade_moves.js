@@ -126,12 +126,15 @@ const validadeMoves = (
             is_mov_possible = true;
         }
     }
+    
+    let l_pieces_table = [...pieces_table];
+    let king_square;
 
     if (is_mov_possible === true) {
         // se o movimento for possível, 
         // essa parte verifica se eh a vez do cidadão
         if (isBlackToMove.current === true) {
-            if (active_piece.current.className[0] === 'w') {
+            if (active_piece.current.className[0] === 'w') { // se é a vez das prestas mas as brancas tentaram jogar
                 is_mov_possible = false;
             } else {
                 for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
@@ -142,8 +145,23 @@ const validadeMoves = (
             if (active_piece.current.className[0] === 'b') {
                 is_mov_possible = false;
             } else {
-                for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
-                    b_pawns_moved.current[i] = 0;
+                l_pieces_table[end[0]][end[1]] = l_pieces_table[start[0]][start[1]];
+                l_pieces_table[start[0]][start[1]] = "";
+
+                for (let i = 0; i < 8; i++) {
+                    for (let j = 0; j < 8; j++) {
+                        if (l_pieces_table[i][j].search("wking") === 0) {
+                            king_square = [i,j];
+                        }
+                    }
+                }
+
+                if (b_pieces_attack.current[king_square[0]][king_square[1]] === 1) {
+                    is_mov_possible = false;
+                } else  {
+                    for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
+                        b_pawns_moved.current[i] = 0;
+                    }
                 }
             }
         }
@@ -153,7 +171,6 @@ const validadeMoves = (
         if (is_a_castle === false) {
             movs_str.current += `${horizontal[end[0]]}${vertical[end[1]]} `;
         }
-
     }
 
     return is_mov_possible;

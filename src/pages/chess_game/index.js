@@ -6,7 +6,6 @@ import defineVertical from "./functions/define_vertical";
 import validadeMoves from "./functions/validade_moves";
 import Player from "../../components/common/player/player";
 import TrackMovements from "../../components/track_movements/TrackMovements";
-
 import "./styles.css";
 import defineTable from "./functions/define_table";
 import defineAttacked from "./functions/define_attacked";

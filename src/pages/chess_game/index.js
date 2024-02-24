@@ -122,7 +122,7 @@ const ChessGame = ({
         [0, 0, 0, 0, 0, 0, 0, 0]
     ]);
 
-    let table = defineTable(vertical, horizontal, piecesArray, w_pieces_attack, debug_mode);
+    let table = defineTable(vertical, horizontal, piecesArray, b_pieces_attack, debug_mode);
 
     let movs_str = useRef("");
 

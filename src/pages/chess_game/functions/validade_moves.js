@@ -19,8 +19,6 @@ const validadeMoves = (
     isBlackToMove,
     w_pawns_moved,
     b_pawns_moved,
-    w_pieces_attack,
-    b_pieces_attack,
     movs_str,
     horizontal,
     vertical,
@@ -36,9 +34,11 @@ const validadeMoves = (
     // an passant
     // dama
     // roque
+    // not sudo legal moves
 
     // falta:
-    // !not sudo legal moves
+    // regras de empate, isso quero fazer no back
+    // regras de chequemate, também quero no back
 
     let is_mov_possible = false;
     let is_a_castle = false;

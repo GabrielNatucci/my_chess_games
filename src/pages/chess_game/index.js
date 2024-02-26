@@ -167,7 +167,8 @@ const ChessGame = ({
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    let movs_str_tmp = movs_str.current;
+                    let movs_str_tmp = movs_str.current; 
+                    // ve se o movimento é jogável
                     if (validadeMoves(
                             pieces_table,
                             start_square,
@@ -176,8 +177,6 @@ const ChessGame = ({
                             isBlackToMove,
                             w_pawns_moved,
                             b_pawns_moved,
-                            w_pieces_attack,
-                            b_pieces_attack,
                             movs_str,
                             horizontal,
                             vertical,

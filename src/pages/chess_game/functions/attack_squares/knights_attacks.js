@@ -18,7 +18,7 @@ const knightAttacks = (
 
         if ((temp[0] < 8 && temp[0] >= 0) &&
             (temp[1] < 8 && temp[1] >= 0)) { // filtra movimentos que são dentro do tabuleiro
-            w_pieces_attack.current[temp[0]][temp[1]] = 1;
+            w_pieces_attack[temp[0]][temp[1]] = 1;
         }
     }
 }

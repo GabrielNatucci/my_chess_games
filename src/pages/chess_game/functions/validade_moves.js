@@ -7,6 +7,8 @@ import evaluateBlackPawn from "./evaluate/evaluateBlackPawn.js";
 import evaluateQueen from "./evaluate/evaluateQueen.js";
 import areArraysEqual from "../../../core_scripts/areArraysEqual.js";
 import defineAttacked from "./define_attacked.js";
+import defineEmptyTable from "./define_empty_table.js";
+import copyTable from "./copy_table.js";
 // import defineAttacked from "./define_attacked.js";
 
 const validadeMoves = (
@@ -126,26 +128,47 @@ const validadeMoves = (
         }
     }
     
-    let l_pieces_table = [...pieces_table];
     let king_square;
+    let l_pieces_table = defineEmptyTable();
+    let l_b_attacked = defineEmptyTable();
+    let l_w_attacked = defineEmptyTable();
+
+    copyTable(l_pieces_table, pieces_table)
 
     if (is_mov_possible === true) {
+        // essa variáveis são pra avaliar se o movimento é legal
+        // isso cria uma cópia local da tabela global para ver se o lance é jogável
+        l_pieces_table[end[0]][end[1]] = l_pieces_table[start[0]][start[1]];
+        l_pieces_table[start[0]][start[1]] = '';
+        defineAttacked(l_pieces_table, isBlackToMove.current, l_w_attacked, l_b_attacked);
+
         // se o movimento for possível, 
         // essa parte verifica se eh a vez do cidadão
         if (isBlackToMove.current === true) {
             if (active_piece.current.className[0] === 'w') { // se é a vez das prestas mas as brancas tentaram jogar
                 is_mov_possible = false;
             } else {
-                for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
-                    w_pawns_moved.current[i] = 0;
+                for (let i = 0; i < 8; i++) {
+                    for (let j = 0; j < 8; j++) {
+                        if (l_pieces_table[i][j].search("bking") === 0) {
+                            king_square = [i,j];
+                        }
+                    }
+                }
+
+                if (l_w_attacked[king_square[0]][king_square[1]] === 1) { // ve se o rei nao está numa casa dominada pelo oponente
+                    is_mov_possible = false;
+                } else {
+                    for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
+                        w_pawns_moved.current[i] = 0;
+                    }
                 }
             }
         } else {
             if (active_piece.current.className[0] === 'b') {
                 is_mov_possible = false;
             } else {
-                l_pieces_table[end[0]][end[1]] = l_pieces_table[start[0]][start[1]];
-
+                // acha o rei branco
                 for (let i = 0; i < 8; i++) {
                     for (let j = 0; j < 8; j++) {
                         if (l_pieces_table[i][j].search("wking") === 0) {
@@ -154,14 +177,8 @@ const validadeMoves = (
                     }
                 }
 
-                let l_local_b_attacked;
-                defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack, b_pieces_attack);
-
-                console.log(b_pieces_attack.current[king_square[0]][king_square[1]])
-
-                if (b_pieces_attack.current[king_square[0]][king_square[1]] === 1) {
+                if (l_b_attacked[king_square[0]][king_square[1]] === 1) { // ve se o rei nao está numa casa dominada pelo oponente
                     is_mov_possible = false;
-
                 } else  {
                     for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
                         b_pawns_moved.current[i] = 0;

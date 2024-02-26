@@ -9,6 +9,7 @@ import TrackMovements from "../../components/track_movements/TrackMovements";
 import "./styles.css";
 import defineTable from "./functions/define_table";
 import defineAttacked from "./functions/define_attacked";
+import defineEmptyTable from "./functions/define_empty_table";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -99,27 +100,10 @@ const ChessGame = ({
     let w_pawns_moved = useRef([0, 0, 0, 0, 0, 0, 0, 0]);
     let b_pawns_moved = useRef([0, 0, 0, 0, 0, 0, 0, 0]);
 
-    let w_pieces_attack = useRef([ // matriz que manterá quais casas são atacadas pelas brancas
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0]
-    ]);
+    // matriz que manterá quais casas são atacadas pelas brancas
+    let w_pieces_attack = useRef(defineEmptyTable());
 
-    let b_pieces_attack = useRef([ // matriz que manterá quais casas são atacadas pelas pretas
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0]
-    ]);
+    let b_pieces_attack = useRef(defineEmptyTable());
 
     let table = defineTable(vertical, horizontal, piecesArray, b_pieces_attack, debug_mode);
 
@@ -183,6 +167,7 @@ const ChessGame = ({
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
+                    let movs_str_tmp = movs_str.current;
                     if (validadeMoves(
                             pieces_table,
                             start_square,
@@ -206,9 +191,11 @@ const ChessGame = ({
 
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
-                        defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack, b_pieces_attack);
+                        defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack.current, b_pieces_attack.current);
 
                         setPiecesArray([...piecesArray]);
+                    } else {
+                        movs_str.current = movs_str_tmp;
                     }
                 }
 

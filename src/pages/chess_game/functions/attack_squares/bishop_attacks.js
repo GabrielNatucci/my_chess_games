@@ -18,7 +18,7 @@ const forDiagonal = (
         tmp_square[1] += vari_y;
 
         try {
-            w_pieces_attack.current[tmp_square[0]][tmp_square[1]] = 1;
+            w_pieces_attack[tmp_square[0]][tmp_square[1]] = 1;
             
             if (isThereAPiece(pieces_table, tmp_square) === true ) 
                 break;

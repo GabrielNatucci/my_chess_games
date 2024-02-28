@@ -9,6 +9,7 @@ import areArraysEqual from "../../../core_scripts/areArraysEqual.js";
 import defineAttacked from "./define_attacked.js";
 import defineEmptyTable from "./define_empty_table.js";
 import copyTable from "./copy_table.js";
+import isKingInCheck from "./evaluate/isWhiteKingInCheck.js";
 // import defineAttacked from "./define_attacked.js";
 
 const validadeMoves = (
@@ -145,44 +146,20 @@ const validadeMoves = (
         // se o movimento for possível, 
         // essa parte verifica se eh a vez do cidadão
         if (isBlackToMove.current === true) {
-            if (active_piece.current.className[0] === 'w') { // se é a vez das prestas mas as brancas tentaram jogar
+            if (active_piece.current.className[0] === 'w' || isKingInCheck(l_pieces_table, l_w_attacked, "black") === true) { 
                 is_mov_possible = false;
             } else {
-                for (let i = 0; i < 8; i++) {
-                    for (let j = 0; j < 8; j++) {
-                        if (l_pieces_table[i][j].search("bking") === 0) {
-                            king_square = [i,j];
-                        }
-                    }
-                }
-
-                if (l_w_attacked[king_square[0]][king_square[1]] === 1) { // ve se o rei nao está numa casa dominada pelo oponente
-                    is_mov_possible = false;
-                } else {
-                    for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
-                        w_pawns_moved.current[i] = 0;
-                    }
+                for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
+                    w_pawns_moved.current[i] = 0;
                 }
             }
         } else {
-            if (active_piece.current.className[0] === 'b') {
+            // se não for a vez da cor jogando ou se o rei está em cheque
+            if (active_piece.current.className[0] === 'b' || isKingInCheck(l_pieces_table, l_b_attacked, "white") === true) { 
                 is_mov_possible = false;
             } else {
-                // acha o rei branco
-                for (let i = 0; i < 8; i++) {
-                    for (let j = 0; j < 8; j++) {
-                        if (l_pieces_table[i][j].search("wking") === 0) {
-                            king_square = [i,j];
-                        }
-                    }
-                }
-
-                if (l_b_attacked[king_square[0]][king_square[1]] === 1) { // ve se o rei nao está numa casa dominada pelo oponente
-                    is_mov_possible = false;
-                } else  {
-                    for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
-                        b_pawns_moved.current[i] = 0;
-                    }
+                for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
+                    b_pawns_moved.current[i] = 0;
                 }
             }
         }

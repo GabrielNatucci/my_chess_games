@@ -15,8 +15,8 @@ const defineAttacked = ( // função que atualiza o mapa de peças attacadas
 
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
-            // w_pieces_attack[i][j] = 0;
-            // b_pieces_attack[i][j] = 0;
+            w_pieces_attack[i][j] = 0;
+            b_pieces_attack[i][j] = 0;
         }
     }
 

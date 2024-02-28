@@ -10,6 +10,8 @@ import "./styles.css";
 import defineTable from "./functions/define_table";
 import defineAttacked from "./functions/define_attacked";
 import defineEmptyTable from "./functions/define_empty_table";
+import isKingInCheck from "./functions/evaluate/isWhiteKingInCheck";
+import makeKingsCheck from "./functions/makeKingsCheck";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -192,7 +194,9 @@ const ChessGame = ({
                         pieces_table[start_square[0]][start_square[1]] = "";
                         defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack.current, b_pieces_attack.current);
 
-                        setPiecesArray([...piecesArray]);
+                        makeKingsCheck(pieces_table, isBlackToMove.current, b_pieces_attack.current, w_pieces_attack.current);
+
+                        setPiecesArray([...pieces_table]);
                     } else {
                         movs_str.current = movs_str_tmp;
                     }

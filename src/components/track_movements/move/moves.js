@@ -18,7 +18,6 @@ const movesParser = (text) => {
             count++;
         }
     }
-
     return moves;
 
 }

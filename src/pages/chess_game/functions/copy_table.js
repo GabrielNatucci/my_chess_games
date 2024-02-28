@@ -1,3 +1,7 @@
+/**
+ * copia os valores da tabela_2 na tabela_1
+ */ 
+
 const copyTable = (
     table_1,
     table_2, 

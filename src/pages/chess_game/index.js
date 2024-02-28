@@ -12,6 +12,7 @@ import defineAttacked from "./functions/define_attacked";
 import defineEmptyTable from "./functions/define_empty_table";
 import isKingInCheck from "./functions/evaluate/isWhiteKingInCheck";
 import makeKingsCheck from "./functions/makeKingsCheck";
+import copyTable from "./functions/copy_table";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -86,7 +87,7 @@ const areTheyEqual = (firstArray, secondArray) => {
 const ChessGame = ({
     debug_mode
 }) => {
-    const [piecesArray, setPiecesArray] = useState(pieces_table);
+    const [piecesArray, setPiecesArray] = useState([...pieces_table]);
 
     // table definition
     let active_piece = useRef(); // pega a peça sem renderizar de novo tudo
@@ -193,7 +194,6 @@ const ChessGame = ({
                         pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
                         pieces_table[start_square[0]][start_square[1]] = "";
                         defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack.current, b_pieces_attack.current);
-
                         makeKingsCheck(pieces_table, isBlackToMove.current, b_pieces_attack.current, w_pieces_attack.current);
 
                         setPiecesArray([...pieces_table]);

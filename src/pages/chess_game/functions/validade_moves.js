@@ -44,13 +44,15 @@ const validadeMoves = (
     let is_mov_possible = false;
     let is_a_castle = false;
 
+    let temp_map;
+
     if ((active_piece.current.className.search("bpawn") === 0) || (active_piece.current.className.search("wpawn") === 0)) { // peões
         let origin_square;
 
         if (active_piece.current.className.search("wpawn") === 0) { // peões brancos
             origin_square = 1;
 
-            let temp_map = [...b_pawns_moved.current]; // cria um mapa temporiario
+            temp_map = [...b_pawns_moved.current]; // cria um mapa temporiario
             if (evaluateWhitePawn(pieces_table, start, end, b_pawns_moved, movs_str, horizontal) === true) {
                 // caso tenha sido um movimento de dois passos, atualiza o mapa de an passant
                 if (start[1] === origin_square && (end[1] - start[1] === 2)) {
@@ -59,9 +61,6 @@ const validadeMoves = (
 
                 // se uma caputa de passagem foi feita, 
                 // ele compara o mapa temporário com o que foi enviado para função, para ver se tal captura foi feita
-                if (areArraysEqual(b_pawns_moved.current, temp_map) === false) {
-                    pieces_table[end[0]][4] = "";
-                }
 
                 is_mov_possible = true;
             }
@@ -70,7 +69,7 @@ const validadeMoves = (
         if (active_piece.current.className.search("bpawn") === 0) { //peões pretos
             origin_square = 6;
 
-            let temp_map = [...w_pawns_moved.current]; // cria um mapa temporiario
+            temp_map = [...w_pawns_moved.current]; // cria um mapa temporiario
             if (evaluateBlackPawn(pieces_table, start, end, w_pawns_moved, movs_str, horizontal) === true) {
                 // caso tenha sido um movimento de dois passos, atualiza o mapa de an passant
                 if (start[1] === origin_square && (end[1] - start[1] === -2)) {
@@ -79,9 +78,6 @@ const validadeMoves = (
 
                 // se uma caputa de passagem foi feita, 
                 // ele compara o mapa temporário com o que foi enviado para função, para ver se tal captura foi feita
-                if (areArraysEqual(w_pawns_moved.current, temp_map) === false) {
-                    pieces_table[end[0]][3] = "";
-                }
 
                 is_mov_possible = true;
             }
@@ -149,6 +145,12 @@ const validadeMoves = (
             if (active_piece.current.className[0] === 'w' || isKingInCheck(l_pieces_table, l_w_attacked, "black") === true) { 
                 is_mov_possible = false;
             } else {
+                if (temp_map) {
+                    if (areArraysEqual(w_pawns_moved.current, temp_map) === false) {
+                        pieces_table[end[0]][3] = "";
+                    }
+                }
+
                 for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
                     w_pawns_moved.current[i] = 0;
                 }
@@ -158,6 +160,12 @@ const validadeMoves = (
             if (active_piece.current.className[0] === 'b' || isKingInCheck(l_pieces_table, l_b_attacked, "white") === true) { 
                 is_mov_possible = false;
             } else {
+                if (temp_map) {
+                    if (areArraysEqual(b_pawns_moved.current, temp_map) === false) {
+                        pieces_table[end[0]][4] = "";
+                    }
+                }
+
                 for (let i = 0; i < w_pawns_moved.current.length; i++) { // limpa o mapa de an passant, para evitar furo das regras
                     b_pawns_moved.current[i] = 0;
                 }

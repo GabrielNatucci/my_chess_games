@@ -12,6 +12,34 @@ import copyTable from "./copy_table.js";
 import isKingInCheck from "./evaluate/isWhiteKingInCheck.js";
 // import defineAttacked from "./define_attacked.js";
 
+const kinbBlink = (isBlackToMove, active_piece) => {
+    let index = 1;
+    let king;
+    console.log("CU");
+
+    if (isBlackToMove.current === true && active_piece.current.className[0] === "b") {
+        king = document.getElementsByClassName("wking");
+    } else if (isBlackToMove.current === false && active_piece.current.className[0] === "w") {
+        king = document.getElementsByClassName("wking");
+    }
+
+    try {
+        const makeKingBlink = setInterval(() => {
+            if (index === 6) {
+                clearInterval(makeKingBlink);
+            }
+
+            if (index % 2 !== 0) {
+                king[0].classList.add("check");
+            } else {
+                king[0].classList.remove("check");
+            }
+
+            index++;
+        }, 200)
+    } catch (error) { }
+}
+
 const validadeMoves = (
     pieces_table,
     start,
@@ -95,7 +123,7 @@ const validadeMoves = (
     if (active_piece.current.className.search("wking") === 0 || // reis
         active_piece.current.className.search("bking") === 0) {
 
-        if (evaluateKing(pieces_table, start, end,  movs_str)) {
+        if (evaluateKing(pieces_table, start, end, movs_str)) {
             is_mov_possible = true;
         }
 
@@ -124,8 +152,7 @@ const validadeMoves = (
             is_mov_possible = true;
         }
     }
-    
-    let king_square;
+
     let l_pieces_table = defineEmptyTable();
     let l_b_attacked = defineEmptyTable();
     let l_w_attacked = defineEmptyTable();
@@ -142,10 +169,15 @@ const validadeMoves = (
         // se o movimento for possível, 
         // essa parte verifica se eh a vez do cidadão
         if (isBlackToMove.current === true) {
-            if (active_piece.current.className[0] === 'w' || isKingInCheck(l_pieces_table, l_w_attacked, "black") === true) { 
+            if (active_piece.current.className[0] === 'w' || isKingInCheck(l_pieces_table, l_w_attacked, "black") === true) {
+                // se a jogada põe o rei em cheque, ele vai piscar o rei
+                if (isKingInCheck(l_pieces_table, l_w_attacked, "black") === true) {
+                    kinbBlink(isBlackToMove, active_piece);
+                }
+
                 is_mov_possible = false;
             } else {
-                if (temp_map) {
+                if (temp_map) { // faz o an passant acontecer
                     if (areArraysEqual(w_pawns_moved.current, temp_map) === false) {
                         pieces_table[end[0]][3] = "";
                     }
@@ -157,10 +189,15 @@ const validadeMoves = (
             }
         } else {
             // se não for a vez da cor jogando ou se o rei está em cheque
-            if (active_piece.current.className[0] === 'b' || isKingInCheck(l_pieces_table, l_b_attacked, "white") === true) { 
+            if (active_piece.current.className[0] === 'b' || isKingInCheck(l_pieces_table, l_b_attacked, "white") === true) {
+                // se a jogada põe o rei em cheque, ele vai piscar o rei
+                if (isKingInCheck(l_pieces_table, l_b_attacked, "white") === true) {
+                    kinbBlink(isBlackToMove, active_piece);
+                }
+
                 is_mov_possible = false;
             } else {
-                if (temp_map) {
+                if (temp_map) { // faz o an passant acontecer
                     if (areArraysEqual(b_pawns_moved.current, temp_map) === false) {
                         pieces_table[end[0]][4] = "";
                     }

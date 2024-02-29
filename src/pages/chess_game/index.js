@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChessTable from "../../components/common/chess_table/chess_table";
 import definePieces from "./functions/define_pieces";
 import defineHorizonal from "./functions/define_horizontal";
@@ -10,9 +10,8 @@ import "./styles.css";
 import defineTable from "./functions/define_table";
 import defineAttacked from "./functions/define_attacked";
 import defineEmptyTable from "./functions/define_empty_table";
-import isKingInCheck from "./functions/evaluate/isWhiteKingInCheck";
 import makeKingsCheck from "./functions/makeKingsCheck";
-import copyTable from "./functions/copy_table";
+import findKingSquare from "./functions/findKingSquare";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -170,20 +169,20 @@ const ChessGame = ({
                 if (areTheyEqual(end_square, start_square) === 0) {
                     pieces_table = [...piecesArray];
 
-                    let movs_str_tmp = movs_str.current; 
+                    let movs_str_tmp = movs_str.current;
                     // ve se o movimento é jogável
                     if (validadeMoves(
-                            pieces_table,
-                            start_square,
-                            end_square,
-                            active_piece,
-                            isBlackToMove,
-                            w_pawns_moved,
-                            b_pawns_moved,
-                            movs_str,
-                            horizontal,
-                            vertical,
-                        )) {
+                        pieces_table,
+                        start_square,
+                        end_square,
+                        active_piece,
+                        isBlackToMove,
+                        w_pawns_moved,
+                        b_pawns_moved,
+                        movs_str,
+                        horizontal,
+                        vertical,
+                    )) {
 
                         if (isBlackToMove.current === true) {
                             isBlackToMove.current = false;
@@ -197,11 +196,11 @@ const ChessGame = ({
                         makeKingsCheck(pieces_table, isBlackToMove.current, b_pieces_attack.current, w_pieces_attack.current);
 
                         setPiecesArray([...pieces_table]);
-                    } else {
+                    } else { // se o movimento for inválido
+
                         movs_str.current = movs_str_tmp;
                     }
                 }
-
             }
 
             active_piece.current.style.zIndex = "";
@@ -230,8 +229,8 @@ const ChessGame = ({
                 </div>
 
                 <div className="d-flex flex-column justify-content-center">
-                    <TrackMovements text={movs_str.current} 
-                        horizontal={horizontal} 
+                    <TrackMovements text={movs_str.current}
+                        horizontal={horizontal}
                         vertical={vertical}
                     />
                 </div>

@@ -197,6 +197,31 @@ const ChessGame = ({
 
                         setPiecesArray([...pieces_table]);
                     } else { // se o movimento for inválido
+                        // se é a vez das pretas
+                        let index = 1;
+                        let king;
+
+                        if (isBlackToMove.current === true && active_piece.current.className[0] === "b") {
+                            king = document.getElementsByClassName("wking");
+                        } else if (isBlackToMove.current === false && active_piece.current.className[0] === "w") {
+                            king = document.getElementsByClassName("wking");
+                        }
+
+                        try {
+                            const makeKingBlink = setInterval(() => {
+                                if (index === 6) {
+                                    clearInterval(makeKingBlink);
+                                }
+
+                                if (index % 2 !== 0) {
+                                    king[0].classList.add("check");
+                                } else {
+                                    king[0].classList.remove("check");
+                                }
+
+                                index++;
+                            }, 200)
+                        } catch (error) { }
 
                         movs_str.current = movs_str_tmp;
                     }

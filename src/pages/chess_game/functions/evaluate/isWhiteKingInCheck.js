@@ -13,12 +13,11 @@ const isKingInCheck = (
     }
 
     let king_square = [];
-
     king_square = findKingSquare(pieces_table, color);
 
     if (attacked_squares[king_square[0]][king_square[1]] === 1) { // ve se o rei nao está numa casa dominada pelo oponente
         return true;
-    } 
+    }
 
     return false;
 }

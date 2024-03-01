@@ -11,7 +11,7 @@ import defineTable from "./functions/define_table";
 import defineAttacked from "./functions/define_attacked";
 import defineEmptyTable from "./functions/define_empty_table";
 import makeKingsCheck from "./functions/makeKingsCheck";
-import findKingSquare from "./functions/findKingSquare";
+import isKingInCheck from "./functions/evaluate/isWhiteKingInCheck";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -202,26 +202,33 @@ const ChessGame = ({
                         let king;
 
                         if (isBlackToMove.current === true && active_piece.current.className[0] === "b") {
-                            king = document.getElementsByClassName("wking");
+                            king = document.getElementsByClassName("bking");
                         } else if (isBlackToMove.current === false && active_piece.current.className[0] === "w") {
                             king = document.getElementsByClassName("wking");
                         }
 
-                        try {
-                            const makeKingBlink = setInterval(() => {
-                                if (index === 6) {
-                                    clearInterval(makeKingBlink);
-                                }
+                        if (king) {
+                            if ((isBlackToMove.current === true && isKingInCheck(pieces_table, w_pieces_attack.current, "black")) // se o rei das pretas está em cheque
+                                ||                                                                                        // ou 
+                                (isBlackToMove.current === false && isKingInCheck(pieces_table, b_pieces_attack.current, "white") // se o rei das brancas está em cheque
+                                )) {
 
-                                if (index % 2 !== 0) {
-                                    king[0].classList.add("check");
-                                } else {
-                                    king[0].classList.remove("check");
-                                }
+                                // faz o rei piscar, indicando que o movimento é ilegal
+                                const makeKingBlink = setInterval(() => {
+                                    if (index === 6) {
+                                        clearInterval(makeKingBlink);
+                                    }
 
-                                index++;
-                            }, 200)
-                        } catch (error) { }
+                                    if (index % 2 !== 0) {
+                                        king[0].classList.add("check");
+                                    } else {
+                                        king[0].classList.remove("check");
+                                    }
+
+                                    index++;
+                                }, 200)
+                            }
+                        }
 
                         movs_str.current = movs_str_tmp;
                     }

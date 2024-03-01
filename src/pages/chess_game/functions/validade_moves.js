@@ -15,7 +15,6 @@ import isKingInCheck from "./evaluate/isWhiteKingInCheck.js";
 const kinbBlink = (isBlackToMove, active_piece) => {
     let index = 1;
     let king;
-    console.log("CU");
 
     if (isBlackToMove.current === true && active_piece.current.className[0] === "b") {
         king = document.getElementsByClassName("wking");
@@ -69,9 +68,17 @@ const validadeMoves = (
     // regras de empate, isso quero fazer no back
     // regras de chequemate, também quero no back
 
+    // define variáveis que são utilizadas para caculos das jogadas possíveis
+
+    let l_pieces_table = defineEmptyTable();
+    copyTable(l_pieces_table, pieces_table);
+
+    let l_b_attacked = defineEmptyTable();
+    let l_w_attacked = defineEmptyTable();
+    defineAttacked(l_pieces_table, isBlackToMove.current, l_w_attacked, l_b_attacked);
+
     let is_mov_possible = false;
     let is_a_castle = false;
-
     let temp_map;
 
     if ((active_piece.current.className.search("bpawn") === 0) || (active_piece.current.className.search("wpawn") === 0)) { // peões
@@ -123,7 +130,14 @@ const validadeMoves = (
     if (active_piece.current.className.search("wking") === 0 || // reis
         active_piece.current.className.search("bking") === 0) {
 
-        if (evaluateKing(pieces_table, start, end, movs_str)) {
+        let isInCheck;
+        if (active_piece.current.className.search("wking") === 0) {
+            isInCheck = isKingInCheck(pieces_table, l_b_attacked, "white"); // ve se o rei das branas tá em cheque
+        } else {
+            isInCheck = isKingInCheck(pieces_table, l_w_attacked, "black"); // ve se o rei das pretas tá em cheque
+        }
+
+        if (evaluateKing(pieces_table, start, end, movs_str, isInCheck)) {
             is_mov_possible = true;
         }
 
@@ -153,18 +167,15 @@ const validadeMoves = (
         }
     }
 
-    let l_pieces_table = defineEmptyTable();
-    let l_b_attacked = defineEmptyTable();
-    let l_w_attacked = defineEmptyTable();
 
-    copyTable(l_pieces_table, pieces_table)
-
+    copyTable(l_pieces_table, pieces_table);
     if (is_mov_possible === true) {
+        console.log("sou feliz assim");
         // essa variáveis são pra avaliar se o movimento é legal
         // isso cria uma cópia local da tabela global para ver se o lance é jogável
         l_pieces_table[end[0]][end[1]] = l_pieces_table[start[0]][start[1]];
         l_pieces_table[start[0]][start[1]] = '';
-        defineAttacked(l_pieces_table, isBlackToMove.current, l_w_attacked, l_b_attacked);
+        defineAttacked(l_pieces_table, isBlackToMove.current, l_w_attacked, l_b_attacked); // atualiza o mapa de peças atacadas
 
         // se o movimento for possível, 
         // essa parte verifica se eh a vez do cidadão

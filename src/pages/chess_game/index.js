@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import "./styles.css";
+import React, { useRef, useState } from "react";
 import ChessTable from "../../components/common/chess_table/chess_table";
 import definePieces from "./functions/define_pieces";
 import defineHorizonal from "./functions/define_horizontal";
@@ -6,7 +7,6 @@ import defineVertical from "./functions/define_vertical";
 import validadeMoves from "./functions/validade_moves";
 import Player from "../../components/common/player/player";
 import TrackMovements from "../../components/track_movements/TrackMovements";
-import "./styles.css";
 import defineTable from "./functions/define_table";
 import defineAttacked from "./functions/define_attacked";
 import defineEmptyTable from "./functions/define_empty_table";

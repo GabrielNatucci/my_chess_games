@@ -4,16 +4,21 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import ChessGame from './pages/chess_game';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import HomePage from './pages/home_page/home_page';
+import LoginPage from './pages/login_page/login_page';
+import RegisterPage from './pages/register_page/register_page';
 
 const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <LoginPage />
+    },
     {
         path: "/game",
         element: <ChessGame debug_mode={false} />,
     },
     {
-        path: "/",
-        element: <HomePage />,
+        path: "/register",
+        element: <RegisterPage />
     }
 ])
 

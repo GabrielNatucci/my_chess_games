@@ -2,8 +2,8 @@
     width: 100%;
     height: 100vh;
     background-color: var(--bg-color);
-
     font-family: var(--body-font);
+    user-select: none;
 }
 
 .login_page_border {

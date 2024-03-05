@@ -24,6 +24,7 @@ const RegisterPage = () => {
 
     const registerPlayer = (e) => {
         e.preventDefault();
+        const name = document.getElementById("form-name").value;
         const email = document.getElementById("form-email").value;
         const passwords = document.getElementsByClassName("form-password");
         const password_1 = passwords[0].value;
@@ -34,7 +35,7 @@ const RegisterPage = () => {
         const erro_senha = document.getElementById("form-error-senha");
 
         if (areArraysEqual(password_1, password_2) === true) {
-            const player = { email, password }
+            const player = { email, name, password }
 
             fetch("http://localhost:8080/player/add", {
                 method: "POST",
@@ -68,6 +69,7 @@ const RegisterPage = () => {
                 <h1 className="text-center mb-3">Register</h1>
 
                 <form className="d-flex flex-column">
+                    <input id="form-name" placeholder="Name of your account" type="text" className="mb-3 p-2 rounded text-white login_page_border " />
                     <input id="form-email" placeholder="Email" type="text" className="mb-3 p-2 rounded text-white login_page_border " />
                     <input placeholder="Password" type="password" className="form-password mb-3 p-2 rounded text-white login_page_border " />
                     <input placeholder="Repeat password" type="password" className="form-password mb-2 p-2 rounded text-white login_page_border " />

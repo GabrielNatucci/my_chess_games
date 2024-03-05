@@ -6,6 +6,7 @@ import definePieces from "../chess_game/functions/define_pieces";
 import defineTable from "../chess_game/functions/define_table";
 import defineVertical from "../chess_game/functions/define_vertical";
 import "./login_page.css";
+import validateEmail from "../emailValidation/validateEmail";
 
 const LoginPage = () => {
     const horizontal = defineHorizonal();
@@ -21,9 +22,15 @@ const LoginPage = () => {
 
     const sendLoginInfo = (e) => {
         e.preventDefault();
-        const email = document.getElementById("form-email").value;
+        const emailOrName = document.getElementById("form-email").value;
         const password = document.getElementById("form-password").value;
-        const player = { email, password }
+
+        let player = {}
+        if (validateEmail(emailOrName) === false) {
+            player = { name: emailOrName, password }
+        } else {
+            player = { email: emailOrName, password }
+        }
 
         fetch("http://localhost:8080/player/login", {
             method: "POST",
@@ -54,7 +61,7 @@ const LoginPage = () => {
 
                 <p id="login-error" className="sumir">Email ou senha invalidos</p>
                 <form className="d-flex flex-column">
-                    <input placeholder="Email" type="text" className="mb-3 p-2 rounded text-white login_page_border" id="form-email" />
+                    <input placeholder="Email or username" type="text" className="mb-3 p-2 rounded text-white login_page_border" id="form-email" />
                     <input placeholder="Password" type="password" className="mb-3 p-2 rounded text-white login_page_border" id="form-password" />
 
                     <div>

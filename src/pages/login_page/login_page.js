@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ChessTable from "../../components/common/chess_table/chess_table";
 import defineHorizonal from "../chess_game/functions/define_horizontal";
@@ -11,7 +12,12 @@ const LoginPage = () => {
     const vertical = defineVertical();
     const pieces_table = definePieces();
     const table = defineTable(vertical, horizontal, pieces_table);
-    const navegar = useNavigate();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const erro = document.getElementById("login-error");
+        erro.classList.add("sumir");
+    }, [])
 
     const sendLoginInfo = (e) => {
         e.preventDefault();
@@ -24,8 +30,12 @@ const LoginPage = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(player)
         }).then((response) => {
-            navegar("/game");
-            console.log(response.status);
+            if (response.status === 200) {
+                navigate("/game");
+            } else {
+                const erro = document.getElementById("login-error");
+                erro.classList.remove("sumir");
+            }
         })
     }
 
@@ -42,6 +52,7 @@ const LoginPage = () => {
             <section className="login-section p-5 rounded login_page_border ">
                 <h1 className="text-center mb-3">Login</h1>
 
+                <p id="login-error" className="sumir">Email ou senha invalidos</p>
                 <form className="d-flex flex-column">
                     <input placeholder="Email" type="text" className="mb-3 p-2 rounded text-white login_page_border" id="form-email" />
                     <input placeholder="Password" type="password" className="mb-3 p-2 rounded text-white login_page_border" id="form-password" />

@@ -33,3 +33,12 @@
     outline: none;
     transition: 0.3s ease;
 }
+
+#form-error,
+#form-error-senha {
+    color: red;
+}
+
+.sumir {
+    display: none;
+}

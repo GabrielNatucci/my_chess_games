@@ -33,3 +33,11 @@
     outline: none;
     transition: 0.3s ease;
 }
+
+#login-error {
+    color: red;
+}
+
+.sumir {
+    display: none;
+}

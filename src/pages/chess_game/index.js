@@ -1,5 +1,7 @@
 import "./styles.css";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Stomp from "stompjs"
+import SockJS from "sockjs-client"
 import ChessTable from "../../components/common/chess_table/chess_table";
 import definePieces from "./functions/define_pieces";
 import defineHorizonal from "./functions/define_horizontal";
@@ -104,12 +106,18 @@ const ChessGame = ({
 
     // matriz que manterá quais casas são atacadas pelas brancas
     let w_pieces_attack = useRef(defineEmptyTable());
-
     let b_pieces_attack = useRef(defineEmptyTable());
-
     let table = defineTable(vertical, horizontal, piecesArray, b_pieces_attack, debug_mode);
-
     let movs_str = useRef("");
+
+    useEffect(() => {
+        const socket = new SockJS('http://172.24.48.250:8080/chess')
+        const client = Stomp.over(socket);
+
+        client.connect({}, () => {
+            console.log("conectado?");
+        })
+    }, [])
 
     function grabPiece(e) {
         if (e.button === 0) {

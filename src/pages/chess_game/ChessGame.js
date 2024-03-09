@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./ChessGame.css";
 import React, { useEffect, useRef, useState } from "react";
 import Stomp from "stompjs"
 import SockJS from "sockjs-client"

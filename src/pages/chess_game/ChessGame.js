@@ -14,6 +14,11 @@ import defineAttacked from "./functions/define_attacked";
 import defineEmptyTable from "./functions/define_empty_table";
 import makeKingsCheck from "./functions/makeKingsCheck";
 import isKingInCheck from "./functions/evaluate/isWhiteKingInCheck";
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
+import { useNavigate } from "react-router-dom";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -109,6 +114,9 @@ const ChessGame = ({
     let b_pieces_attack = useRef(defineEmptyTable());
     let table = defineTable(vertical, horizontal, piecesArray, b_pieces_attack, debug_mode);
     let movs_str = useRef("");
+
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
         const socket = new SockJS('http://172.24.48.250:8080/chess')
@@ -249,35 +257,67 @@ const ChessGame = ({
         }
     }
 
-    return (
-        <main
-            className="d-flex justify-content-center"
-            onMouseUp={letOffPiece}
-        >
-            <div className="d-flex justify-content-center">
-                <div className="players_name_table d-flex flex-column justify-content-center">
-                    <Player player_name={"Random Noob"} />
-                    <ChessTable
-                        grabPiece={grabPiece}
-                        onContextMenu={contextMenu}
-                        movePiece={movePiece}
-                        horizontal={horizontal}
-                        vertical={vertical}
-                        table={table}
-                    />
-                    <Player player_name={"You"} />
-                </div>
+    const logOut = (e) => {
+        e.preventDefault();
+        navigate("/");
+        localStorage.removeItem("user");
+    }
 
-                <div className="d-flex flex-column justify-content-center">
-                    <TrackMovements text={movs_str.current}
-                        horizontal={horizontal}
-                        vertical={vertical}
-                    />
-                </div>
-            </div>
+    try {
+        return (
+            <main >
+                <Navbar className="bg-body-dark ">
+                    <Container>
+                        <Navbar.Brand href="#home" className="text-white">Natuccis Chessgame</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="me-auto" />
 
-        </main>
-    );
+                            <NavDropdown title={`${user.name}`} id="nav-perfil" className="text-white" drop="start" data-bs-theme="dark">
+                                <NavDropdown.Item href="#action/3.1"> Perfil </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action/3.2" onClick={logOut}>
+                                    Sair
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+
+
+                <section
+                    className="d-flex justify-content-center"
+                    onMouseUp={letOffPiece}
+                >
+                    <div className="d-flex justify-content-center">
+                        <div className="players_name_table d-flex flex-column justify-content-center">
+                            <Player player_name={"Random Noob"} />
+                            <ChessTable
+                                grabPiece={grabPiece}
+                                onContextMenu={contextMenu}
+                                movePiece={movePiece}
+                                horizontal={horizontal}
+                                vertical={vertical}
+                                table={table}
+                            />
+                            <Player player_name={"You"} />
+                        </div>
+
+                        <div className="d-flex flex-column justify-content-center">
+                            <TrackMovements text={movs_str.current}
+                                horizontal={horizontal}
+                                vertical={vertical}
+                            />
+                        </div>
+                    </div>
+                </section>
+            </main >
+        );
+    } catch (error) {
+        return (
+            <div onLoad={navigate("/")}>aff</div>
+        );
+    }
 };
 
 export default ChessGame;

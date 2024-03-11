@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 import ChessTable from "../../components/common/chess_table/chess_table";
 import defineHorizonal from "../chess_game/functions/define_horizontal";
 import definePieces from "../chess_game/functions/define_pieces";
@@ -18,6 +18,29 @@ const LoginPage = () => {
     useEffect(() => {
         const erro = document.getElementById("login-error");
         erro.classList.add("sumir");
+
+        const user = localStorage.getItem("user");
+
+        if (user) {
+            const player = {
+                name: user.name,
+                authtoken: user.authtoken
+            }
+
+            fetch("http://172.24.48.250:8080/player/loginbyauthtoken", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(player)
+            }).then(response => {
+                if (response.status === 200)
+                    return response.json();
+                else
+                    return null;
+            })
+                .then(data => {
+                    navigate("/game");
+                })
+        }
     }, [])
 
     const sendLoginInfo = (e) => {
@@ -32,18 +55,25 @@ const LoginPage = () => {
             player = { email: emailOrName, password }
         }
 
-        fetch("http://localhost:8080/player/login", {
+        fetch("http://172.24.48.250:8080/player/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(player)
-        }).then((response) => {
-            if (response.status === 200) {
-                navigate("/game");
-            } else {
-                const erro = document.getElementById("login-error");
-                erro.classList.remove("sumir");
-            }
+        }).then(response => {
+            if (response.status === 200)
+                return response.json();
+            else
+                return null;
         })
+            .then(data => {
+                if (data !== null) {
+                    localStorage.setItem("user", JSON.stringify(data));
+                    navigate("/game");
+                } else {
+                    const erro = document.getElementById("login-error");
+                    erro.classList.remove("sumir");
+                }
+            })
     }
 
     return (

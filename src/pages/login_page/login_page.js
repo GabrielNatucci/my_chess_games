@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, json, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ChessTable from "../../components/common/chess_table/chess_table";
 import defineHorizonal from "../chess_game/functions/define_horizontal";
 import definePieces from "../chess_game/functions/define_pieces";

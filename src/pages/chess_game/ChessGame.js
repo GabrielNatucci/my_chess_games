@@ -291,7 +291,7 @@ const ChessGame = ({
                 >
                     <div className="d-flex justify-content-center">
                         <div className="players_name_table d-flex flex-column justify-content-center">
-                            <Player player_name={"Random Noob"} />
+                            <Player player_name={"Random Noob"} color="black" />
                             <ChessTable
                                 grabPiece={grabPiece}
                                 onContextMenu={contextMenu}
@@ -300,7 +300,7 @@ const ChessGame = ({
                                 vertical={vertical}
                                 table={table}
                             />
-                            <Player player_name={"You"} />
+                            <Player player_name={`${user.name}`} color="white" />
                         </div>
 
                         <div className="d-flex flex-column justify-content-center">

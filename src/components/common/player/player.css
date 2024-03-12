@@ -4,11 +4,22 @@
 
 .player {
     width: 100%;
-    margin: 3vh 0;
+    margin: 2vh 0;
 }
 
-.player p {
-    color: white;
-    display: inline-block;
-    margin: auto;
+.player-image {
+    height: 100%;
+    aspect-ratio: 1;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    user-select: auto;
+}
+
+.white {
+    background-image: url("../../../assets/pieces/white/white_pawn.svg");
+}
+
+.black {
+    background-image: url("../../../assets/pieces/black/black_pawn.svg");
 }

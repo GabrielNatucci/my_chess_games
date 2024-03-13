@@ -17,7 +17,7 @@ const kinbBlink = (isBlackToMove, active_piece) => {
     let king;
 
     if (isBlackToMove.current === true && active_piece.current.className[0] === "b") {
-        king = document.getElementsByClassName("wking");
+        king = document.getElementsByClassName("bking");
     } else if (isBlackToMove.current === false && active_piece.current.className[0] === "w") {
         king = document.getElementsByClassName("wking");
     }

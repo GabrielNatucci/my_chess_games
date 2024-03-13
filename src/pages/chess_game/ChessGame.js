@@ -93,6 +93,9 @@ const areTheyEqual = (firstArray, secondArray) => {
 const ChessGame = ({
     debug_mode
 }) => {
+    // escrever código para ivnerter o tabuleiro
+    // fazer um parser para enviar o último movimento
+    // fazer algo para fazer o jogador só jogar os lances que são dele
     const [piecesArray, setPiecesArray] = useState([...pieces_table]);
 
     // table definition

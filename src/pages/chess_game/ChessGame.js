@@ -118,14 +118,40 @@ const ChessGame = ({
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"));
 
-    useEffect(() => {
-        const socket = new SockJS('http://172.24.48.250:8080/chess')
-        const client = Stomp.over(socket);
+    let socket = useRef(new SockJS('http://172.24.48.250:8080/chess'));
+    let client = useRef(Stomp.over(socket.current));
 
-        client.connect({}, () => {
-            console.log("conectado?");
-        })
-    }, [])
+    useEffect(() => {
+        // verifica se algum movimento foi jogado
+        if (movs_str.current !== "") {
+            // pacote
+            let pkg = {
+                player: {
+                    name: user.name,
+                    authtoken: user.authtoken
+                },
+                move_str: movs_str.current
+            }
+
+            // pra verificar se o websocket está conectado
+            if (client.current.connected) {
+                // função para enviar documento
+                client.current.send(
+                    "/app/move",
+                    {},
+                    JSON.stringify(pkg)
+                );
+            } else {
+                console.log("conexão não estabelecida")
+            }
+        } else {
+            client.current.connect({}, () => {
+                client.current.subscribe("topic/moveplayer", (msg) => {
+                    console.log(msg);
+                })
+            })
+        }
+    }, [client, piecesArray, user])
 
     function grabPiece(e) {
         if (e.button === 0) {

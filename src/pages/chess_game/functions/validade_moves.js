@@ -170,7 +170,6 @@ const validadeMoves = (
 
     copyTable(l_pieces_table, pieces_table);
     if (is_mov_possible === true) {
-        console.log("sou feliz assim");
         // essa variáveis são pra avaliar se o movimento é legal
         // isso cria uma cópia local da tabela global para ver se o lance é jogável
         l_pieces_table[end[0]][end[1]] = l_pieces_table[start[0]][start[1]];

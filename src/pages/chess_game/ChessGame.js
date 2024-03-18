@@ -128,9 +128,7 @@ const ChessGame = ({
     useEffect(() => {
         // verifica se algum movimento foi jogado
         if (movs_str.current !== "") {
-            // pacote
-
-            // separa o último lance para enviar ao servidor
+            // pacote separa o último lance para enviar ao servidor
             let mov = parseToLastMove(movs_str.current);
 
             let pkg = {
@@ -154,8 +152,8 @@ const ChessGame = ({
             }
         } else {
             client.current.connect({}, () => {
-                client.current.subscribe("topic/moveplayer", (msg) => {
-                    console.log(msg);
+                client.current.subscribe("/move_resp", (message) => {
+                    console.log(message.body);
                 })
             })
         }

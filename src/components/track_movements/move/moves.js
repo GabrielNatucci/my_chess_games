@@ -11,7 +11,7 @@ const movesParser = (text) => {
         if (text[i] === " ") {
             // moves.push(text.slice(index ,i));
             moves.push(
-                <Move count={count} key={count} move={text.slice(index ,i)} />
+                <Move count={count} key={count} move={text.slice(index, i)} />
             );
 
             index = i;

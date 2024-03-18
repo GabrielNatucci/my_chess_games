@@ -19,6 +19,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from "react-router-dom";
+import parseToLastMove from "./functions/parserToSendLastMove";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -128,12 +129,16 @@ const ChessGame = ({
         // verifica se algum movimento foi jogado
         if (movs_str.current !== "") {
             // pacote
+
+            // separa o último lance para enviar ao servidor
+            let mov = parseToLastMove(movs_str.current);
+
             let pkg = {
                 player: {
                     name: user.name,
                     authtoken: user.authtoken
                 },
-                move_str: movs_str.current
+                move_str: mov
             }
 
             // pra verificar se o websocket está conectado

@@ -8,7 +8,7 @@ import wpawnAttacks from "./attack_squares/wpawn_attacks";
 const defineAttacked = ( // função que atualiza o mapa de peças attacadas
     pieces_table,
     isBlackToMove,
-    w_pieces_attack, 
+    w_pieces_attack,
     b_pieces_attack
 ) => {
     let square = [];
@@ -29,7 +29,7 @@ const defineAttacked = ( // função que atualiza o mapa de peças attacadas
 
             if (pieces_table[square[0]][square[1]].search("wknight") === 0) // cavalo
                 knightAttacks(square, w_pieces_attack);
-                
+
             if (pieces_table[square[0]][square[1]].search("wbishop") === 0) // bispo
                 bishopAttacks(pieces_table, square, w_pieces_attack);
 
@@ -57,7 +57,7 @@ const defineAttacked = ( // função que atualiza o mapa de peças attacadas
 
             if (pieces_table[square[0]][square[1]].search("bknight") === 0) // cavalo
                 knightAttacks(square, b_pieces_attack);
-                
+
             if (pieces_table[square[0]][square[1]].search("bbishop") === 0) // bispo
                 bishopAttacks(pieces_table, square, b_pieces_attack);
 

@@ -157,19 +157,33 @@ const ChessGame = ({
                 console.log("conexão não estabelecida")
             }
         } else {
-            client.current.connect({}, () => {
-                client.current.subscribe("/move_resp", (message) => {
-                    let move = JSON.parse(message.body);
-                    console.log(move);
+            if (client.current.connected === false) {
+                client.current.connect({}, () => {
+                    client.current.subscribe("/move_resp", (message) => {
+                        let move = JSON.parse(message.body);
+                        console.log(move);
 
-                    if (areArraysEqual(move.move_str, mov.current)) {
-                        console.log("MA MOVE")
-                    } else {
-                        console.log("FALSE")
-                        figureMoveOut(pieces_table, setPiecesArray, move, horizontal);
-                    }
+                        if (areArraysEqual(move.move_str, mov.current)) {
+                            console.log("MA MOVE")
+                        } else {
+                            console.log("FALSE")
+
+                            // traduz os lances chegados para o tabuleiro
+                            figureMoveOut(
+                                pieces_table,
+                                isBlackToMove,
+                                w_pawns_moved,
+                                b_pawns_moved,
+                                movs_str,
+                                horizontal,
+                                vertical,
+                                setPiecesArray,
+                                move,
+                            );
+                        }
+                    })
                 })
-            })
+            }
         }
     }, [client, piecesArray, user])
 
@@ -245,7 +259,6 @@ const ChessGame = ({
                         horizontal,
                         vertical,
                     )) {
-
                         if (isBlackToMove.current === true) {
                             isBlackToMove.current = false;
                         } else {

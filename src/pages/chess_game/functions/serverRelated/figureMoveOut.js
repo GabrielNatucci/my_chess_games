@@ -1,34 +1,41 @@
 import areArraysEqual from "../../../../core_scripts/areArraysEqual";
+import defineAttacked from "../define_attacked";
+import makeKingsCheck from "../makeKingsCheck";
+import validadeMoves from "../validade_moves";
 
 const figureMoveOut = (
     pieces_table,
+    isBlackToMove,
+    w_pawns_moved,
+    b_pawns_moved,
+    movs_str,
+    horizontal,
+    vertical,
     setPiecesArray,
     move,
-    horizontal,
 ) => {
-    let column = horizontal.indexOf(move.move_str[0]);
-    let row = move.move_str[1] - 1;
-    let square = [1, row];
+    // acha o end_square
+    let column = horizontal.indexOf(move.move_str[move.move_str.length - 2]);
+    let row = move.move_str[move.move_str.length - 1] - 1;
+    let end_square = [column, row];
 
-    if (move.color.indexOf("white") !== -1) {
-        for (let i = 0; i <= 7; i++) {
-            if (pieces_table[column][i].indexOf("wpawn") !== -1) {
-                pieces_table[column][row] = pieces_table[column][i];
-                pieces_table[column][i] = "";
-                break;
-            }
-        }
+    console.log(end_square);
 
-    } else {
-        for (let i = 7; i >= 0; i--) {
-            if (pieces_table[column][i].indexOf("bpawn") !== -1) {
-                pieces_table[column][row] = pieces_table[column][i];
-                pieces_table[column][i] = "";
-                break;
-            }
-        }
+    // validadeMoves(
+    //     pieces_table,
+    //     start_square,
+    //     end_square,
+    //     active_piece,
+    //     isBlackToMove,
+    //     w_pawns_moved,
+    //     b_pawns_moved,
+    //     movs_str,
+    //     horizontal,
+    //     vertical,
+    // )
 
-    }
+    // pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
+    // pieces_table[start_square[0]][start_square[1]] = "";
 
     setPiecesArray([...pieces_table]);
 }

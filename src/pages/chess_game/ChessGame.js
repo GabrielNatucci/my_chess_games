@@ -20,6 +20,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { useNavigate } from "react-router-dom";
 import parseToLastMove from "./functions/parserToSendLastMove";
+import areArraysEqual from "../../core_scripts/areArraysEqual";
+import figureMoveOut from "./functions/serverRelated/figureMoveOut";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -124,19 +126,23 @@ const ChessGame = ({
 
     let socket = useRef(new SockJS('http://172.24.48.250:8080/chess'));
     let client = useRef(Stomp.over(socket.current));
+    let mov = useRef("");
 
     useEffect(() => {
         // verifica se algum movimento foi jogado
         if (movs_str.current !== "") {
             // pacote separa o último lance para enviar ao servidor
-            let mov = parseToLastMove(movs_str.current);
+            mov.current = parseToLastMove(movs_str.current).trim();
+
+            let color = isBlackToMove.current ? "white" : "black";
 
             let pkg = {
                 player: {
                     name: user.name,
                     authtoken: user.authtoken
                 },
-                move_str: mov
+                move_str: mov.current,
+                color: color,
             }
 
             // pra verificar se o websocket está conectado
@@ -153,7 +159,15 @@ const ChessGame = ({
         } else {
             client.current.connect({}, () => {
                 client.current.subscribe("/move_resp", (message) => {
-                    console.log(message.body);
+                    let move = JSON.parse(message.body);
+                    console.log(move);
+
+                    if (areArraysEqual(move.move_str, mov.current)) {
+                        console.log("MA MOVE")
+                    } else {
+                        console.log("FALSE")
+                        figureMoveOut(pieces_table, setPiecesArray, move, horizontal);
+                    }
                 })
             })
         }

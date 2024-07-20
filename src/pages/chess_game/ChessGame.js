@@ -21,7 +21,6 @@ import Container from 'react-bootstrap/Container';
 import { useNavigate } from "react-router-dom";
 import parseToLastMove from "./functions/parserToSendLastMove";
 import areArraysEqual from "../../core_scripts/areArraysEqual";
-import figureMoveOut from "./functions/serverRelated/figureMoveOut";
 let pieces_table = definePieces();
 let horizontal = defineHorizonal();
 let vertical = defineVertical();
@@ -96,6 +95,7 @@ const areTheyEqual = (firstArray, secondArray) => {
 const ChessGame = ({
     debug_mode
 }) => {
+    const ip = "localhost:8080"
     // escrever código para ivnerter o tabuleiro
     // fazer um parser para enviar o último movimento
     // fazer algo para fazer o jogador só jogar os lances que são dele
@@ -107,7 +107,8 @@ const ChessGame = ({
     var r = document.querySelector(":root");
     var rs = getComputedStyle(r); // para pegar o tamanho do tabuleiro
 
-    let start_square = [];
+    let start_square = useRef([]);
+    let end_square = useRef([]);
     let TableItSelf = null;
 
     let isBlackToMove = useRef(false);
@@ -124,7 +125,8 @@ const ChessGame = ({
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"));
 
-    let socket = useRef(new SockJS('http://172.24.48.250:8080/chess'));
+    let socket = useRef(new SockJS('http://' + ip + '/chess'));
+    console.log(socket.current.url);
     let client = useRef(Stomp.over(socket.current));
     let mov = useRef("");
 
@@ -136,18 +138,23 @@ const ChessGame = ({
 
             let color = isBlackToMove.current ? "white" : "black";
 
+            console.log("1:" + start_square);
+
             let pkg = {
                 player: {
                     name: user.name,
                     authtoken: user.authtoken
                 },
-                move_str: mov.current,
+                start_square: start_square.current,
+                end_square: end_square.current,
                 color: color,
             }
 
             // pra verificar se o websocket está conectado
             if (client.current.connected) {
                 // função para enviar documento
+
+                console.log(pkg);
                 client.current.send(
                     "/app/move",
                     {},
@@ -160,25 +167,24 @@ const ChessGame = ({
             client.current.connect({}, () => {
                 client.current.subscribe("/move_resp", (message) => {
                     let move = JSON.parse(message.body);
-                    console.log(move);
 
-                    if (areArraysEqual(move.move_str, mov.current)) {
+                    if (areArraysEqual(move.end_square, mov.current)) {
                         console.log("MA MOVE")
                     } else {
-                        console.log("FALSE")
-                        figureMoveOut(pieces_table, setPiecesArray, move, horizontal);
+                        console.log("MA OPPONENTS MOVE")
+                        validadeMoves(pieces_table, start_square.current, end_square.current, active_piece, isBlackToMove, w_pawns_moved, b_pawns_moved, movs_str, horizontal, vertical)
                     }
                 })
             })
         }
-    }, [client, piecesArray, user])
+    }, [client, piecesArray, start_square, user])
 
     function grabPiece(e) {
         if (e.button === 0) {
             TableItSelf = document.getElementById("chess-table-id");
 
             if (e.target.classList.contains("piece")) { // verifica se eh uma peça
-                start_square = findCurrentSquare(e, TableItSelf);
+                start_square.current = findCurrentSquare(e, TableItSelf);
                 active_piece.current = e.target;
             }
         } else if (e.button === 2) {
@@ -225,35 +231,36 @@ const ChessGame = ({
 
     function letOffPiece(e) {
         if (active_piece.current) {
-            let end_square = findCurrentSquare(e, TableItSelf);
+            end_square.current = findCurrentSquare(e, TableItSelf);
+            console.log(end_square);
 
-            if (end_square.indexOf(-1) === -1 && start_square.indexOf(-1) === -1) {
-                if (areTheyEqual(end_square, start_square) === 0) {
+            if (end_square.current.indexOf(-1) === -1 && start_square.current.indexOf(-1) === -1) {
+                if (areTheyEqual(end_square.current, start_square.current) === 0) {
                     pieces_table = [...piecesArray];
+                    console.log("0:" + start_square.current);
 
                     let movs_str_tmp = movs_str.current;
                     // ve se o movimento é jogável
                     if (validadeMoves(
                         pieces_table,
-                        start_square,
-                        end_square,
+                        start_square.current,
+                        end_square.current,
                         active_piece,
                         isBlackToMove,
                         w_pawns_moved,
                         b_pawns_moved,
                         movs_str,
                         horizontal,
-                        vertical,
+                        vertical
                     )) {
-
                         if (isBlackToMove.current === true) {
                             isBlackToMove.current = false;
                         } else {
                             isBlackToMove.current = true;
                         }
 
-                        pieces_table[end_square[0]][end_square[1]] = pieces_table[start_square[0]][start_square[1]];
-                        pieces_table[start_square[0]][start_square[1]] = "";
+                        pieces_table[end_square.current[0]][end_square.current[1]] = pieces_table[start_square.current[0]][start_square.current[1]];
+                        pieces_table[start_square.current[0]][start_square.current[1]] = "";
                         defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack.current, b_pieces_attack.current);
                         makeKingsCheck(pieces_table, isBlackToMove.current, b_pieces_attack.current, w_pieces_attack.current);
 

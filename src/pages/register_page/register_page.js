@@ -37,7 +37,7 @@ const RegisterPage = () => {
         if (areArraysEqual(password_1, password_2) === true) {
             const player = { email, name, password }
 
-            fetch("http://172.24.48.250:8080/player/add", {
+            fetch("http://localhost:8080/player/add", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(player)

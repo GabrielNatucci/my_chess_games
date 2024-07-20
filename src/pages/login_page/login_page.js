@@ -27,21 +27,17 @@ const LoginPage = () => {
                 authtoken: user.authtoken
             }
 
-            fetch("http://172.24.48.250:8080/player/loginbyauthtoken", {
+            fetch("http://localhost:8080/player/loginbyauthtoken", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(player)
             }).then(response => {
-                if (response.status === 200)
-                    return response.json();
-                else
-                    return null;
-            })
-                .then(data => {
+                if (response.status === 200) {
                     navigate("/game");
-                })
+                }
+            })
         }
-    }, [])
+    }, [navigate])
 
     const sendLoginInfo = (e) => {
         e.preventDefault();
@@ -55,7 +51,7 @@ const LoginPage = () => {
             player = { email: emailOrName, password }
         }
 
-        fetch("http://172.24.48.250:8080/player/login", {
+        fetch("http://localhost:8080/player/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(player)

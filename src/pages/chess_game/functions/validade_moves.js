@@ -81,6 +81,17 @@ const validadeMoves = (
     let is_a_castle = false;
     let temp_map;
 
+
+    let nullActivePiece = false;
+
+    console.log(active_piece.current == null)
+    console.log(document.getElementById(l_pieces_table[start[0]][start[1]]))
+
+    if (active_piece.current == null) {
+        nullActivePiece = true;
+        active_piece.current = document.getElementById(l_pieces_table[start[0]][start[1]]);
+    }
+
     if ((active_piece.current.className.search("bpawn") === 0) || (active_piece.current.className.search("wpawn") === 0)) { // peões
         let origin_square;
 
@@ -224,6 +235,10 @@ const validadeMoves = (
         if (is_a_castle === false) {
             movs_str.current += `${horizontal[end[0]]}${vertical[end[1]]} `;
         }
+    }
+
+    if (nullActivePiece === true) {
+        active_piece.current = null;
     }
 
     return is_mov_possible;

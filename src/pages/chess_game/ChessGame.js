@@ -109,6 +109,7 @@ const ChessGame = ({
 
     let start_square = useRef([]);
     let end_square = useRef([]);
+    let ma_move = useRef(false);
     let TableItSelf = null;
 
     let isBlackToMove = useRef(false);
@@ -130,15 +131,56 @@ const ChessGame = ({
     let client = useRef(Stomp.over(socket.current));
     let mov = useRef("");
 
+    if (!client.current.connected) {
+        client.current.connect({}, () => {
+            client.current.subscribe("/move_resp", (message) => {
+                let move = JSON.parse(message.body);
+
+                console.log(areArraysEqual(move.player.name, user.name) === false)
+                if (areArraysEqual(move.end_square, end_square.current) && ma_move.current === true && areArraysEqual(move.player.name, user.name) === true) {
+                    console.log("MA MOVE")
+                } else {
+                    console.log("MA OPPONENTS MOVE")
+
+                    if (validadeMoves(
+                        pieces_table,
+                        move.start_square,
+                        move.end_square,
+                        active_piece,
+                        isBlackToMove,
+                        w_pawns_moved,
+                        b_pawns_moved,
+                        movs_str,
+                        horizontal,
+                        vertical
+                    )) {
+                        if (isBlackToMove.current === true) {
+                            isBlackToMove.current = false;
+                        } else {
+                            isBlackToMove.current = true;
+                        }
+
+                        pieces_table[move.end_square[0]][move.end_square[1]] = pieces_table[move.start_square[0]][move.start_square[1]];
+                        pieces_table[move.start_square[0]][move.start_square[1]] = "";
+                        defineAttacked(pieces_table, isBlackToMove.current, w_pieces_attack.current, b_pieces_attack.current);
+                        makeKingsCheck(pieces_table, isBlackToMove.current, b_pieces_attack.current, w_pieces_attack.current);
+
+                        setPiecesArray([...pieces_table]);
+                        ma_move.current = false;
+                    }
+                }
+
+            })
+        })
+    }
+
     useEffect(() => {
         // verifica se algum movimento foi jogado
-        if (movs_str.current !== "") {
+        if (movs_str.current !== "" && ma_move.current === true) {
             // pacote separa o último lance para enviar ao servidor
             mov.current = parseToLastMove(movs_str.current).trim();
 
             let color = isBlackToMove.current ? "white" : "black";
-
-            console.log("1:" + start_square);
 
             let pkg = {
                 player: {
@@ -154,7 +196,7 @@ const ChessGame = ({
             if (client.current.connected) {
                 // função para enviar documento
 
-                console.log(pkg);
+                // console.log(pkg);
                 client.current.send(
                     "/app/move",
                     {},
@@ -163,19 +205,6 @@ const ChessGame = ({
             } else {
                 console.log("conexão não estabelecida")
             }
-        } else {
-            client.current.connect({}, () => {
-                client.current.subscribe("/move_resp", (message) => {
-                    let move = JSON.parse(message.body);
-
-                    if (areArraysEqual(move.end_square, mov.current)) {
-                        console.log("MA MOVE")
-                    } else {
-                        console.log("MA OPPONENTS MOVE")
-                        validadeMoves(pieces_table, start_square.current, end_square.current, active_piece, isBlackToMove, w_pawns_moved, b_pawns_moved, movs_str, horizontal, vertical)
-                    }
-                })
-            })
         }
     }, [client, piecesArray, start_square, user])
 
@@ -232,12 +261,10 @@ const ChessGame = ({
     function letOffPiece(e) {
         if (active_piece.current) {
             end_square.current = findCurrentSquare(e, TableItSelf);
-            console.log(end_square);
 
             if (end_square.current.indexOf(-1) === -1 && start_square.current.indexOf(-1) === -1) {
                 if (areTheyEqual(end_square.current, start_square.current) === 0) {
                     pieces_table = [...piecesArray];
-                    console.log("0:" + start_square.current);
 
                     let movs_str_tmp = movs_str.current;
                     // ve se o movimento é jogável
@@ -265,6 +292,7 @@ const ChessGame = ({
                         makeKingsCheck(pieces_table, isBlackToMove.current, b_pieces_attack.current, w_pieces_attack.current);
 
                         setPiecesArray([...pieces_table]);
+                        ma_move.current = true;
                     } else { // se o movimento for inválido
                         // se é a vez das pretas
                         let index = 1;

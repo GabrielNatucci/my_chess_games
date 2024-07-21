@@ -64,7 +64,7 @@ const LoginPage = () => {
             .then(data => {
                 if (data !== null) {
                     localStorage.setItem("user", JSON.stringify(data));
-                    navigate("/game");
+                    navigate("/game_waiting");
                 } else {
                     const erro = document.getElementById("login-error");
                     erro.classList.remove("sumir");

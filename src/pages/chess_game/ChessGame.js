@@ -380,6 +380,7 @@ const ChessGame = ({
                                 horizontal={horizontal}
                                 vertical={vertical}
                                 table={table}
+                                invertTable={true}
                             />
                             <Player player_name={`${user.name}`} color="white" />
                         </div>

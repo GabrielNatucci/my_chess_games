@@ -6,12 +6,16 @@ import ChessGame from './pages/chess_game/ChessGame';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import LoginPage from './pages/login_page/login_page';
 import RegisterPage from './pages/register_page/register_page';
-
+import ChessGameWainting from './pages/chess_game/chess_game_waiting';
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <LoginPage />
+    },
+    {
+        path: "/game_waiting",
+        element: <ChessGameWainting />
     },
     {
         path: "/game",

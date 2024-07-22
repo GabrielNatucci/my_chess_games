@@ -127,7 +127,6 @@ const ChessGame = ({
     const user = JSON.parse(localStorage.getItem("user"));
 
     let socket = useRef(new SockJS('http://' + ip + '/chess'));
-    console.log(socket.current.url);
     let client = useRef(Stomp.over(socket.current));
     let mov = useRef("");
 
@@ -136,12 +135,7 @@ const ChessGame = ({
             client.current.subscribe("/move_resp", (message) => {
                 let move = JSON.parse(message.body);
 
-                console.log(areArraysEqual(move.player.name, user.name) === false)
-                if (areArraysEqual(move.end_square, end_square.current) && ma_move.current === true && areArraysEqual(move.player.name, user.name) === true) {
-                    console.log("MA MOVE")
-                } else {
-                    console.log("MA OPPONENTS MOVE")
-
+                if (!areArraysEqual(move.end_square, end_square.current) && ma_move.current === true && areArraysEqual(move.player.name, user.name) === true) {
                     if (validadeMoves(
                         pieces_table,
                         move.start_square,

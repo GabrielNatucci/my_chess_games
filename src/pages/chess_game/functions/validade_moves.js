@@ -84,15 +84,13 @@ const validadeMoves = (
 
     let nullActivePiece = false;
 
-    console.log(active_piece.current == null)
-    console.log(document.getElementById(l_pieces_table[start[0]][start[1]]))
-
     if (active_piece.current == null) {
         nullActivePiece = true;
         active_piece.current = document.getElementById(l_pieces_table[start[0]][start[1]]);
     }
 
     if ((active_piece.current.className.search("bpawn") === 0) || (active_piece.current.className.search("wpawn") === 0)) { // peões
+
         let origin_square;
 
         if (active_piece.current.className.search("wpawn") === 0) { // peões brancos

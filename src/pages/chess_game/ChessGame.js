@@ -135,7 +135,12 @@ const ChessGame = ({
             client.current.subscribe("/move_resp", (message) => {
                 let move = JSON.parse(message.body);
 
-                if (!areArraysEqual(move.end_square, end_square.current) && ma_move.current === true && areArraysEqual(move.player.name, user.name) === true) {
+                /* 
+                    esse if basicamente verifica se a jogada foi do adversário ou do próprio cliente
+                    comparando os últimos movimentos do cliente e o id do jogador vindo do servidor
+                    eu sei que tá horrível, não enche
+                */
+                if (!areArraysEqual(move.end_square, end_square.current) && !(areArraysEqual(move.player.name, user.name) === true)) {
                     if (validadeMoves(
                         pieces_table,
                         move.start_square,
@@ -190,7 +195,6 @@ const ChessGame = ({
             if (client.current.connected) {
                 // função para enviar documento
 
-                // console.log(pkg);
                 client.current.send(
                     "/app/move",
                     {},
@@ -256,6 +260,7 @@ const ChessGame = ({
         if (active_piece.current) {
             end_square.current = findCurrentSquare(e, TableItSelf);
 
+            // ??????
             if (end_square.current.indexOf(-1) === -1 && start_square.current.indexOf(-1) === -1) {
                 if (areTheyEqual(end_square.current, start_square.current) === 0) {
                     pieces_table = [...piecesArray];
@@ -374,7 +379,7 @@ const ChessGame = ({
                                 horizontal={horizontal}
                                 vertical={vertical}
                                 table={table}
-                                invertTable={true}
+                                invertTable={false}
                             />
                             <Player player_name={`${user.name}`} color="white" />
                         </div>
